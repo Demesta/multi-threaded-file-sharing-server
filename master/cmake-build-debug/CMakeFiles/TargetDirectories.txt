@@ -1,0 +1,3 @@
+/home/demesta/Documents/syspro3/master/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/demesta/Documents/syspro3/master/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/demesta/Documents/syspro3/master/cmake-build-debug/CMakeFiles/syspro2.dir

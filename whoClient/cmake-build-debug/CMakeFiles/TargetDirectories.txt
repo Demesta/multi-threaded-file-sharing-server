@@ -1,0 +1,3 @@
+/home/demesta/Documents/syspro3/whoClient/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/demesta/Documents/syspro3/whoClient/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/demesta/Documents/syspro3/whoClient/cmake-build-debug/CMakeFiles/whoClient.dir

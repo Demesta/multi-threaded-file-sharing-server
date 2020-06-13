@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/whoClient.dir/main.cpp.o  -o whoClient 
