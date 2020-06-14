@@ -52,6 +52,7 @@ CMakeFiles/syspro2.dir/diseaseHashTable.cpp.o: ../Records_list.h
 CMakeFiles/syspro2.dir/diseaseHashTable.cpp.o: ../TreeNode.h
 CMakeFiles/syspro2.dir/diseaseHashTable.cpp.o: ../diseaseHashTable.cpp
 CMakeFiles/syspro2.dir/diseaseHashTable.cpp.o: ../diseaseHashTable.h
+CMakeFiles/syspro2.dir/diseaseHashTable.cpp.o: ../sockets.h
 CMakeFiles/syspro2.dir/diseaseHashTable.cpp.o: ../utils.h
 
 CMakeFiles/syspro2.dir/main.cpp.o: ../AVLTree.h
@@ -66,10 +67,14 @@ CMakeFiles/syspro2.dir/main.cpp.o: ../countryHashTable.h
 CMakeFiles/syspro2.dir/main.cpp.o: ../diseaseHashTable.h
 CMakeFiles/syspro2.dir/main.cpp.o: ../main.cpp
 CMakeFiles/syspro2.dir/main.cpp.o: ../signal_handler.h
+CMakeFiles/syspro2.dir/main.cpp.o: ../sockets.h
 CMakeFiles/syspro2.dir/main.cpp.o: ../utils.h
 
 CMakeFiles/syspro2.dir/signal_handler.cpp.o: ../signal_handler.cpp
 CMakeFiles/syspro2.dir/signal_handler.cpp.o: ../signal_handler.h
+
+CMakeFiles/syspro2.dir/sockets.cpp.o: ../sockets.cpp
+CMakeFiles/syspro2.dir/sockets.cpp.o: ../sockets.h
 
 CMakeFiles/syspro2.dir/utils.cpp.o: ../Dir_list.h
 CMakeFiles/syspro2.dir/utils.cpp.o: ../PatientRecord.h

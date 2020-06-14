@@ -24,7 +24,7 @@ public:
     void frequency(string, string, string);
     int getDhtNumEntries() const;
     Bucket **getBucketArray() const;
-    void statistics(int, int);
+    void statistics(int socket);
 
 
 

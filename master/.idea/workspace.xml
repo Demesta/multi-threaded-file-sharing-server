@@ -30,12 +30,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e4251418-f537-426b-880c-ebabf7cf721d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../whoServer/Arguments.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../whoServer/Hash.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../whoServer/Hash.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../whoServer/List.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../whoServer/List.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../whoServer/Worker_list.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../whoServer/cmake-build-debug/CMakeFiles/whoServer.dir/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/../whoServer/cmake-build-debug/CMakeFiles/whoServer.dir/main.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../whoServer/cmake-build-debug/whoServer" beforeDir="false" afterPath="$PROJECT_DIR$/../whoServer/cmake-build-debug/whoServer" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../whoServer/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../whoServer/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,6 +146,7 @@
       <workItem from="1592005768553" duration="1880000" />
       <workItem from="1592066695949" duration="1488000" />
       <workItem from="1592080016221" duration="2415000" />
+      <workItem from="1592149598038" duration="10697000" />
     </task>
     <servers />
   </component>
@@ -182,26 +180,26 @@
     <state x="466" y="118" width="424" height="482" key="FileChooserDialogImpl/0.0.1366.720/1366.0.1280.1024@0.0.1366.720" timestamp="1589227097744" />
     <state x="1803" y="168" key="FileChooserDialogImpl/0.0.1366.720/1366.0.1280.1024@1366.0.1280.1024" timestamp="1589854048621" />
     <state x="656" y="170" width="534" height="598" key="FileChooserDialogImpl/0.0.1920.1034@0.0.1920.1034" timestamp="1591133978138" />
-    <state width="1864" height="565" key="GridCell.Tab.0.bottom" timestamp="1592086020145">
+    <state width="1864" height="476" key="GridCell.Tab.0.bottom" timestamp="1592170550007">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
     <state width="1280" height="743" key="GridCell.Tab.0.bottom/0.0.1366.720/1366.0.1280.1024@1366.0.1280.1024" timestamp="1589852967578" />
-    <state width="1864" height="565" key="GridCell.Tab.0.bottom/0.0.1920.1034@0.0.1920.1034" timestamp="1592086020145" />
-    <state width="1864" height="565" key="GridCell.Tab.0.center" timestamp="1592086020143">
+    <state width="1864" height="476" key="GridCell.Tab.0.bottom/0.0.1920.1034@0.0.1920.1034" timestamp="1592170550007" />
+    <state width="1864" height="476" key="GridCell.Tab.0.center" timestamp="1592170550007">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
     <state width="1280" height="743" key="GridCell.Tab.0.center/0.0.1366.720/1366.0.1280.1024@1366.0.1280.1024" timestamp="1589852967578" />
-    <state width="1864" height="565" key="GridCell.Tab.0.center/0.0.1920.1034@0.0.1920.1034" timestamp="1592086020143" />
-    <state width="1864" height="565" key="GridCell.Tab.0.left" timestamp="1592086020143">
+    <state width="1864" height="476" key="GridCell.Tab.0.center/0.0.1920.1034@0.0.1920.1034" timestamp="1592170550007" />
+    <state width="1864" height="476" key="GridCell.Tab.0.left" timestamp="1592170550006">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
     <state width="1280" height="743" key="GridCell.Tab.0.left/0.0.1366.720/1366.0.1280.1024@1366.0.1280.1024" timestamp="1589852967578" />
-    <state width="1864" height="565" key="GridCell.Tab.0.left/0.0.1920.1034@0.0.1920.1034" timestamp="1592086020143" />
-    <state width="1864" height="565" key="GridCell.Tab.0.right" timestamp="1592086020144">
+    <state width="1864" height="476" key="GridCell.Tab.0.left/0.0.1920.1034@0.0.1920.1034" timestamp="1592170550006" />
+    <state width="1864" height="476" key="GridCell.Tab.0.right" timestamp="1592170550007">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
     <state width="1280" height="743" key="GridCell.Tab.0.right/0.0.1366.720/1366.0.1280.1024@1366.0.1280.1024" timestamp="1589852967578" />
-    <state width="1864" height="565" key="GridCell.Tab.0.right/0.0.1920.1034@0.0.1920.1034" timestamp="1592086020144" />
+    <state width="1864" height="476" key="GridCell.Tab.0.right/0.0.1920.1034@0.0.1920.1034" timestamp="1592170550007" />
     <state width="1864" height="302" key="GridCell.Tab.1.bottom" timestamp="1590836960884">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
@@ -252,9 +250,9 @@
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
     <state x="538" y="232" key="run.anything.popup/0.0.1920.1034@0.0.1920.1034" timestamp="1591011858372" />
-    <state x="535" y="3" width="840" height="1032" key="search.everywhere.popup" timestamp="1590844935083">
+    <state x="535" y="3" width="840" height="1032" key="search.everywhere.popup" timestamp="1592167597492">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
-    <state x="535" y="3" width="840" height="1032" key="search.everywhere.popup/0.0.1920.1034@0.0.1920.1034" timestamp="1590844935083" />
+    <state x="535" y="3" width="840" height="1032" key="search.everywhere.popup/0.0.1920.1034@0.0.1920.1034" timestamp="1592167597492" />
   </component>
 </project>

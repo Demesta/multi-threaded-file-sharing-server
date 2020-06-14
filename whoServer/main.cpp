@@ -19,6 +19,17 @@
 #include "Hash.h"
 #include "List.h"
 
+int thread_id = 0;
+
+#define DEBUG
+
+#ifdef DEBUG
+mutex log_mut;
+#define LOG(...) do{ lock_guard<mutex> lock(log_mut); fprintf(stderr, "[INFO] thread %d - ", thread_id); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while(false)
+#else
+#define LOG(...)
+#endif
+
 void child_server(int newsock);
 void perror_exit(char *message);
 void sigchld_handler(int sig);
@@ -80,89 +91,122 @@ struct work_item
 {
   int socket;
   int type;
+  int peer_address;
+  int peer_port;
 };
-work_item* socket_buffer;    //circular buffer
+
+work_item *socket_buffer;    //circular buffer
 mutex socket_buffer_mutex;
 condition_variable non_empty;
 condition_variable non_full;
 
-int buffer_tail = -1;
+int buffer_tail = 0;
 int buffer_head = 0;
 int buffer_capacity = 0;
 int buffer_size = 0;
 
-Worker_list_node* master_workers;
+Worker_list_node *master_workers;
 
-//mutex cout_mutex;
-//void print_statics()
-//{
-//    cout_mutex.lock();
-//    printf("some awesome statistics\n");
-//    cout_mutex.unlock();
-//
-//}
-//
-//int socket_read_int(int socket, int &value)
-//{
-//    return read(socket, &value, sizeof(int));
-//}
-//
-//int socket_read_str(int socket, char *buffer, size_t buffer_size)
-//{
-//    int size;
-//    if (socket_read_int(socket, size) < 0)
-//    {
-//        return -1;
-//    }
-//
-//    if (size > buffer_size)
-//    {
-//        return -1;
-//    }
-//
-//    return read(socket, buffer, size);
-//}
-//
-//int socket_write_int(int socket, int value)
-//{
-//    return write(socket, &value, sizeof(int));
-//}
-//
-//int socket_write_str(int socket, char *buffer, size_t buffer_size)
-//{
-//    if (socket_write_int(socket, buffer_size) < 0)
-//    {
-//        return -1;
-//    }
-//    return write(socket, buffer, buffer_size);
-//}
+mutex cout_mutex;
+
+int __socket_safe_read(int socket, void *buffer, size_t buffer_size)
+{
+    char *buffer_ptr = (char *) buffer;
+    size_t current_index = 0;
+
+    while (current_index < buffer_size)
+    {
+        int read_size = read(socket, buffer_ptr + current_index, buffer_size - current_index);
+        if (read_size < 0)
+        {
+            return -1;
+        }
+        current_index += read_size;
+    }
+
+    return buffer_size;
+}
+
+int __socket_safe_write(int socket, void *buffer, size_t buffer_size)
+{
+    char *buffer_ptr = (char *) buffer;
+    size_t current_index = 0;
+
+    while (current_index < buffer_size)
+    {
+        int write_size = write(socket, buffer_ptr + current_index, buffer_size - current_index);
+        if (write_size < 0)
+        {
+            return -1;
+        }
+        current_index += write_size;
+    }
+
+    return buffer_size;
+}
+
+int socket_read_int(int socket, int *value)
+{
+    return __socket_safe_read(socket, value, sizeof(int));
+}
+
+int socket_read_str(int socket, char *buffer, size_t buffer_size)
+{
+    size_t str_size = 0;
+    if (__socket_safe_read(socket, &str_size, sizeof(size_t)) < 0)
+    {
+        return -1;
+    }
+
+    if ((str_size + 1) > buffer_size)
+    {
+        LOG("buffer overflow");
+        return -1;
+    }
+
+    if (str_size == 0) {
+        return 0;
+    }
+
+    if (__socket_safe_read(socket, buffer, str_size) < 0)
+    {
+        return -1;
+    }
+
+    buffer[str_size] = '\0';
+    return str_size;
+}
+
+int socket_write_int(int socket, int *value)
+{
+    return __socket_safe_write(socket, value, sizeof(int));
+}
+
+int socket_write_str(int socket, char *buffer, size_t buffer_size)
+{
+    if (__socket_safe_write(socket, &buffer_size, sizeof(size_t)) < 0)
+    {
+        return -1;
+    }
+
+    return __socket_safe_write(socket, buffer, buffer_size);
+}
 
 int buffer_read(work_item &item)    //read socket from buffer
 {
-    unique_lock<mutex> lock(socket_buffer_mutex);
-
-    while (buffer_size <= 0)  //nothing to read
     {
-        cout<<"read\n";
-        non_empty.wait(lock);
+        unique_lock<mutex> lock(socket_buffer_mutex);
+
+        non_empty.wait(lock, []
+        { return buffer_size > 0; });
+
+        item.socket = socket_buffer[buffer_tail].socket;
+        item.type = socket_buffer[buffer_tail].type;
+
+        buffer_tail = (buffer_tail + 1) % buffer_capacity;
+        buffer_size--;
     }
 
-    item.socket = socket_buffer[buffer_tail].socket;
-    item.type = socket_buffer[buffer_tail].type;
-
-    buffer_tail = (buffer_tail + 1) % buffer_capacity;
-    buffer_size--;
-
-//    buffer_size--;
-//    buffer_tail++;
-//    if (buffer_tail == buffer_capacity)
-//    {
-//        buffer_tail = 0;
-//    }
-
-    cout<<"did something\n";
-
-    lock.unlock();
     non_full.notify_all();
 
     return 0;
@@ -170,42 +214,25 @@ int buffer_read(work_item &item)    //read socket from buffer
 
 int buffer_write(work_item &value)    //write socket to buffer
 {
-    unique_lock<mutex> lock(socket_buffer_mutex);
-
-    while (buffer_size >= buffer_capacity)  //buffer is full
     {
-        non_full.wait(lock);
+        unique_lock<mutex> lock(socket_buffer_mutex);
+
+        non_full.wait(lock, []
+        { return buffer_size < buffer_capacity; });
+
+        socket_buffer[buffer_head].socket = value.socket;
+        socket_buffer[buffer_head].type = value.type;
+        buffer_head = (buffer_head + 1) % buffer_capacity;
+        buffer_size++;
     }
 
-//    socket_buffer[buffer_head].socket = value.socket;
-//    socket_buffer[buffer_head].type = value.type;
-//    buffer_size++;
-//    buffer_head++;
-//    if (buffer_head == buffer_capacity)
-//    {
-//        buffer_head = 0;
-//    }
-
-    buffer_head = (buffer_head + 1) % buffer_capacity;
-    socket_buffer[buffer_head].socket = value.socket;
-    socket_buffer[buffer_head].type = value.type;
-    buffer_size++;
-
-    cout<<"1-"<<buffer_head<<endl;
-    cout<<"2-"<<buffer_size<<endl;
-    cout<<"3-"<<buffer_tail<<endl;
-    cout<<"4-"<<buffer_capacity<<endl;
-
-    auto temp = socket_buffer;
-
-    lock.unlock();
     non_empty.notify_all();
 
     return 0;
 }
 
-//int statistics_connection(int socket)
-//{
+int statistics_connection(int socket)
+{
 //    char worker_address[32];
 //    if (socket_read_str(socket, worker_address, 32) < 0)
 //    {
@@ -214,59 +241,73 @@ int buffer_write(work_item &value)    //write socket to buffer
 //    }
 //
 //    int worker_port = 0;
-//    if (socket_read_int(socket, worker_port) < 0)
+//    if (socket_read_int(socket, &worker_port) < 0)
 //    {
 //        cout << "failed to read worker port" << endl;
 //        return -1;
 //    }
-//
+
 //    Worker *worker = create_worker(worker_address, worker_port);
-//    char country[32];
-//    size_t country_size;
-//
-//    lock_guard<mutex> cout_lock(cout_mutex);
-//
-//    while ((country_size = socket_read_str(socket, country, 32)) > 0)
-//    {
-//        worker_add_country(worker, country, country_size);
-//
-//        char disease[32];
-//        size_t disease_size;
-//        while ((disease_size = socket_read_str(socket, disease, 32)) > 0)
-//        {
-//            cout << disease << endl;
-//            int age20, age40, age60, age60Plus;
-//            if (socket_read_int(socket, age20) < 0)
-//            {
-//                cout << "failed to read" << endl;
-//                return -1;
-//            }
-//            if (socket_read_int(socket, age40) < 0)
-//            {
-//                cout << "failed to read" << endl;
-//                return -1;
-//            }
-//            if (socket_read_int(socket, age60) < 0)
-//            {
-//                cout << "failed to read" << endl;
-//                return -1;
-//            }
-//            if (socket_read_int(socket, age60Plus) < 0)
-//            {
-//                cout << "failed to read" << endl;
-//                return -1;
-//            }
-//
-//            cout << "Age 0-20 : " << age20 << endl;
-//            cout << "Age 20-40 : " << age40 << endl;
-//            cout << "Age 40-60 : " << age60 << endl;
-//            cout << "Age 60+ : " << age60Plus << endl;
-//        }
-//    }
-//
-//    return 0;
-//}
-//
+    char country[32];
+    int country_size;
+    int date_size;
+    char date_str[11];
+
+    while ((date_size = socket_read_str(socket, date_str, 11)) > 0)
+    {
+        if ((country_size = socket_read_str(socket, country, 32)) < 0)
+        {
+            return -1;
+        }
+
+//            worker_add_country(worker, country, country_size);
+
+        char disease[32];
+        int disease_size;
+        while ((disease_size = socket_read_str(socket, disease, 32)) > 0)
+        {
+            cout << disease << endl;
+            int age20, age40, age60, age60Plus;
+            if (socket_read_int(socket, &age20) < 0)
+            {
+                cout << "failed to read" << endl;
+                return -1;
+            }
+            if (socket_read_int(socket, &age40) < 0)
+            {
+                cout << "failed to read" << endl;
+                return -1;
+            }
+            if (socket_read_int(socket, &age60) < 0)
+            {
+                cout << "failed to read" << endl;
+                return -1;
+            }
+            if (socket_read_int(socket, &age60Plus) < 0)
+            {
+                cout << "failed to read" << endl;
+                return -1;
+            }
+
+            {
+                lock_guard<mutex> cout_lock(cout_mutex);
+                cout << "Age 0-20 : " << age20 << endl;
+                cout << "Age 20-40 : " << age40 << endl;
+                cout << "Age 40-60 : " << age60 << endl;
+                cout << "Age 60+ : " << age60Plus << endl;
+            }
+        }
+    }
+
+    if (date_size < 0)
+    {
+        LOG("statistics connection failed: error code %d", date_size);
+        return -1;
+    }
+
+    return 0;
+}
+
 //int query_connection(int socket)
 //{
 //    char query[128];
@@ -338,27 +379,22 @@ void perror_exit(char *message)
 
 void task(int i)    //slave threads' work
 {
+    thread_id = i;
+    char message[100];
+
     while (running)
     {
         work_item item{};
         buffer_read(item);
 
-//        if (buffer_read(item) < 0)
-//        {
-//            cout << "thread " << i << " waiting for some work" << endl;
-//            unique_lock<mutex> lock(work_variable_mutex);
-//            work_variable.wait(lock);
-//            cout << "thread " << i << " some work may be ready" << endl;
-//
-//            continue;
-//        }
-
-        cout << "thread " << i << " accepting connection from socket" << endl;
+        cout << "thread " << i << " accepting connection from socket " << item.socket << endl;
 
         if (item.type == 0)   //something from master
         {
-            cout<<"some stats\n";
-            //statistics_connection(item.socket);
+            statistics_connection(item.socket);
+//            int j;
+//            while(read(item.socket, &j, sizeof(int)) <= 0);
+//            LOG("%d", j);
         }
 //        else if (item.type == 1)   //query from client
 //        {
@@ -401,12 +437,8 @@ int main(int argc, char *argv[])       //main thread
         int socket;
         if ((socket = accept(statistics_socket, nullptr, nullptr)) > 0)
         {
-            cout<<"i accept\n";
             work_item item{.socket=socket, .type=0};
             buffer_write(item);
-            cout<<"wrote in buffer\n";
-
-            insertListNode(socket, master_workers);
         }
 
 //        if ((socket = accept(query_socket, nullptr, nullptr)) > 0)

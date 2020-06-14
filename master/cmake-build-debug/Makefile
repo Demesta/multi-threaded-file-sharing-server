@@ -420,6 +420,33 @@ signal_handler.cpp.s:
 	$(MAKE) -f CMakeFiles/syspro2.dir/build.make CMakeFiles/syspro2.dir/signal_handler.cpp.s
 .PHONY : signal_handler.cpp.s
 
+sockets.o: sockets.cpp.o
+
+.PHONY : sockets.o
+
+# target to build an object file
+sockets.cpp.o:
+	$(MAKE) -f CMakeFiles/syspro2.dir/build.make CMakeFiles/syspro2.dir/sockets.cpp.o
+.PHONY : sockets.cpp.o
+
+sockets.i: sockets.cpp.i
+
+.PHONY : sockets.i
+
+# target to preprocess a source file
+sockets.cpp.i:
+	$(MAKE) -f CMakeFiles/syspro2.dir/build.make CMakeFiles/syspro2.dir/sockets.cpp.i
+.PHONY : sockets.cpp.i
+
+sockets.s: sockets.cpp.s
+
+.PHONY : sockets.s
+
+# target to generate assembly for a file
+sockets.cpp.s:
+	$(MAKE) -f CMakeFiles/syspro2.dir/build.make CMakeFiles/syspro2.dir/sockets.cpp.s
+.PHONY : sockets.cpp.s
+
 utils.o: utils.cpp.o
 
 .PHONY : utils.o
@@ -489,6 +516,9 @@ help:
 	@echo "... signal_handler.o"
 	@echo "... signal_handler.i"
 	@echo "... signal_handler.s"
+	@echo "... sockets.o"
+	@echo "... sockets.i"
+	@echo "... sockets.s"
 	@echo "... utils.o"
 	@echo "... utils.i"
 	@echo "... utils.s"

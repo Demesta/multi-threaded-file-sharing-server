@@ -8,6 +8,7 @@
 #include "Bucket.h"
 #include "PatientRecord.h"
 #include "Records_list.h"
+#include "sockets.h"
 
 diseaseHashTable::diseaseHashTable(int dhs_num_entries)
 {
@@ -30,7 +31,7 @@ diseaseHashTable::~diseaseHashTable()
     delete bucket_array;
 }
 
-void diseaseHashTable::statistics(int fifo, int buff)
+void diseaseHashTable::statistics(int socket)
 {
     for (int i = 0; i < this->dht_num_entries; i++)  //search the whole hash table
     {
@@ -40,11 +41,6 @@ void diseaseHashTable::statistics(int fifo, int buff)
         {
             for (int j = 0; j <= it->current_record; j++)  //check every tree in this bucket
             {
-                int ages_20 = 0;
-                int ages_40 = 0;
-                int ages_60 = 0;
-                int ages_60plus = 0;
-
                 if (it->tree_array[j] != nullptr)
                 {
 
@@ -55,38 +51,24 @@ void diseaseHashTable::statistics(int fifo, int buff)
                         N->patientRecord->getCountry();  //will be true for the whole tree as the whole table is for one file
                     string date = N->patientRecord->GetDate(); //same
 
-                    ages_20 = it->tree_array[j]->countAges(N, 0, 20);
-                    ages_40 = it->tree_array[j]->countAges(N, 21, 40);
-                    ages_60 = it->tree_array[j]->countAges(N, 41, 60);
-                    ages_60plus = it->tree_array[j]->countAges(N, 60, 150);
+                    int ages_20 = it->tree_array[j]->countAges(N, 0, 20);
+                    int ages_40 = it->tree_array[j]->countAges(N, 21, 40);
+                    int ages_60 = it->tree_array[j]->countAges(N, 41, 60);
+                    int ages_60plus = it->tree_array[j]->countAges(N, 60, 150);
 
-                    string s1 = "Age range 0-20 years: ";
-                    string s2 = "Age range 21-40 years: ";
-                    string s3 = "Age range 41-60 years: ";
-                    string s4 = "Age range 60+ years: ";
-                    string cases = "cases";
 
-                    string a1 = to_string(ages_20);
-                    string a2 = to_string(ages_40);
-                    string a3 = to_string(ages_60);
-                    string a4 = to_string(ages_60plus);
-
-                    s1 = s1 + a1 + " " + cases;
-                    s2 = s2 + a2 + " " + cases;
-                    s3 = s3 + a3 + " " + cases;
-                    s4 = s4 + a4 + " " + cases;
-
-                    send_message(disease, fifo, buff);
-                    send_message(s1, fifo, buff);
-                    send_message(s2, fifo, buff);
-                    send_message(s3, fifo, buff);
-                    send_message(s4, fifo, buff);
-                    send_message(" ", fifo, buff);
+                    socket_write_string(socket, disease);
+                    socket_write_int(socket, ages_20);
+                    socket_write_int(socket, ages_40);
+                    socket_write_int(socket, ages_60);
+                    socket_write_int(socket, ages_60plus);
                 }
             }
             it = it->next_bucket;
         }
     }
+
+    socket_write_size_t(socket, 0);
 }
 
 bool diseaseHashTable::treeExists(AVLTree *tree, PatientRecord *record)

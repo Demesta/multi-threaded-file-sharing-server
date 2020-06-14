@@ -28,6 +28,7 @@
 #include "Bucket.h"
 #include "PatientRecord.h"
 #include "signal_handler.h"
+#include "sockets.h"
 
 using namespace std;
 
@@ -180,207 +181,207 @@ int main(int argc, char *argv[])
 
                 }
             }
-            else if (strcmp(get_command, "/listCountries") == 0)
-            {
-                DirListNode *N = country_list;
-                while (N != nullptr)
-                {
-                    cout << N->item->getCountryName() << " " << getpid() << endl;
-                    N = N->nextNode;
-                }
-
-            }
-            else if (strcmp(get_command, "/topk-AgeRanges") == 0)
-            {
-                receive_message(p_to_w,get_command,buffer_size);   //get the whole "/topk-AgeRanges k country disease date1 date2" string
-
-                string elements[6];
-                string country, disease, date1, date2, token;
-                int k;
-                int d = 0;
-
-                for (int k = 0; k < strlen(get_command); k++)   //cut string to parts
-                {
-                    if (get_command[k] == ' ' || get_command[k] == '\n' || get_command[k] == '\0')
-                    {
-                        d++;
-                    } else
-                    {
-                        elements[d] += get_command[k];
-                    }
-                }
-
-                k = stoi(elements[1]);  //elements[0] = "/topk-AgeRanges" so i skip it
-                country = elements[2];
-                disease = elements[3];
-                date1 = elements[4];
-                date2 = elements[5];
-
-                string my_country;
-                DirListNode *K = country_list;
-                while (K != nullptr)
-                {
-                    my_country = K->item->getCountryName();
-
-                    if (my_country == country) //found the country so this child has to work
-                    {
-                        age_ranges(k, country, disease, date1, date2, List);
-                        break; //there is no reason to search further as we look for only one country
-                    }
-                    K = K->nextNode;
-                }
-
-            }
-            else if(strcmp(get_command, "/diseaseFrequency") == 0)
-            {
-                receive_message(p_to_w,get_command,buffer_size);
-
-                string elements[5];
-                string country, disease, date1, date2, token;
-                int k;
-                int d = 0;
-
-                for (int k = 0; k < strlen(get_command); k++)   //cut string to parts
-                {
-                    if (get_command[k] == ' ' || get_command[k] == '\n' || get_command[k] == '\0')
-                    {
-                        d++;
-                    } else
-                    {
-                        elements[d] += get_command[k];
-                    }
-                }
-
-                disease = elements[1];
-                date1 = elements[2];
-                date2 = elements[3];
-
-                if(elements[4] == "") //no country given
-                {
-                    string my_country;
-                    DirListNode *K = country_list;
-                    while (K != nullptr)  //for every country of every worker
-                    {
-                        my_country = K->item->getCountryName();
-
-                        diseaseFrequency(disease, date1, date2, my_country, List);
-                        K = K->nextNode;
-                    }
-                }
-                else
-                {
-                    country = elements[4];
-
-                    string my_country;
-                    DirListNode *K = country_list;
-                    while (K != nullptr)
-                    {
-                        my_country = K->item->getCountryName();
-
-                        if (my_country == country) //found the country so this child has to work
-                        {
-                            diseaseFrequency(disease, date1, date2, country, List);
-                            break; //there is no reason to search further as we look for only one country
-                        }
-                        K = K->nextNode;
-                    }
-
-                }
-
-            }
-            else if(strcmp(get_command, "/numPatientAdmissions") == 0 || strcmp(get_command, "/numPatientDischarges") == 0)
-            {
-                string status;
-
-                if(strcmp(get_command, "/numPatientAdmissions") == 0)
-                    status = "ENTRY";
-                else if(strcmp(get_command, "/numPatientDischarges") == 0)
-                    status = "EXIT";
-
-                receive_message(p_to_w,get_command,buffer_size);
-
-                string elements[5];
-                string country, disease, date1, date2, token;
-                int k;
-                int d = 0;
-
-                for (int k = 0; k < strlen(get_command); k++)   //cut string to parts
-                {
-                    if (get_command[k] == ' ' || get_command[k] == '\n' || get_command[k] == '\0')
-                    {
-                        d++;
-                    } else
-                    {
-                        elements[d] += get_command[k];
-                    }
-                }
-
-                disease = elements[1];
-                date1 = elements[2];
-                date2 = elements[3];
-
-                if(elements[4] == "") //no country given
-                {
-                    string my_country;
-                    DirListNode *K = country_list;
-                    while (K != nullptr)  //for every country of every worker
-                    {
-                        my_country = K->item->getCountryName();
-                        num_Patient_Status(status, disease, date1, date2, my_country, List);
-                        K = K->nextNode;
-                    }
-                }
-                else
-                {
-                    country = elements[4];
-
-                    string my_country;
-                    DirListNode *K = country_list;
-                    while (K != nullptr)
-                    {
-                        my_country = K->item->getCountryName();
-
-                        if (my_country == country) //found the country so this child has to work
-                        {
-                            num_Patient_Status(status, disease, date1, date2, country, List);
-                            break; //there is no reason to search further as we look for only one country
-                        }
-                        K = K->nextNode;
-                    }
-
-                }
-            }
-            else if(strcmp(get_command, "/searchPatientRecord") == 0)
-            {
-                receive_message(p_to_w,get_command,buffer_size);
-
-                string elements[2];
-                string country, disease, date1, date2, token;
-                string record_id;
-                int d = 0;
-
-                for (int k = 0; k < strlen(get_command); k++)   //cut string to parts
-                {
-                    if (get_command[k] == ' ' || get_command[k] == '\n' || get_command[k] == '\0')
-                    {
-                        d++;
-                    } else
-                    {
-                        elements[d] += get_command[k];
-                    }
-                }
-
-                record_id = elements[1];
-                ListNode *N = List;
-                while(N != nullptr)
-                {
-                    if(N->item->GetRecordId() == record_id)
-                    {
-                        N->item->printPatientRecord();
-                    }
-                    N = N->nextNode;
-                }
-            }
+//            else if (strcmp(get_command, "/listCountries") == 0)
+//            {
+//                DirListNode *N = country_list;
+//                while (N != nullptr)
+//                {
+//                    cout << N->item->getCountryName() << " " << getpid() << endl;
+//                    N = N->nextNode;
+//                }
+//
+//            }
+//            else if (strcmp(get_command, "/topk-AgeRanges") == 0)
+//            {
+//                receive_message(p_to_w,get_command,buffer_size);   //get the whole "/topk-AgeRanges k country disease date1 date2" string
+//
+//                string elements[6];
+//                string country, disease, date1, date2, token;
+//                int k;
+//                int d = 0;
+//
+//                for (int k = 0; k < strlen(get_command); k++)   //cut string to parts
+//                {
+//                    if (get_command[k] == ' ' || get_command[k] == '\n' || get_command[k] == '\0')
+//                    {
+//                        d++;
+//                    } else
+//                    {
+//                        elements[d] += get_command[k];
+//                    }
+//                }
+//
+//                k = stoi(elements[1]);  //elements[0] = "/topk-AgeRanges" so i skip it
+//                country = elements[2];
+//                disease = elements[3];
+//                date1 = elements[4];
+//                date2 = elements[5];
+//
+//                string my_country;
+//                DirListNode *K = country_list;
+//                while (K != nullptr)
+//                {
+//                    my_country = K->item->getCountryName();
+//
+//                    if (my_country == country) //found the country so this child has to work
+//                    {
+//                        age_ranges(k, country, disease, date1, date2, List);
+//                        break; //there is no reason to search further as we look for only one country
+//                    }
+//                    K = K->nextNode;
+//                }
+//
+//            }
+//            else if(strcmp(get_command, "/diseaseFrequency") == 0)
+//            {
+//                receive_message(p_to_w,get_command,buffer_size);
+//
+//                string elements[5];
+//                string country, disease, date1, date2, token;
+//                int k;
+//                int d = 0;
+//
+//                for (int k = 0; k < strlen(get_command); k++)   //cut string to parts
+//                {
+//                    if (get_command[k] == ' ' || get_command[k] == '\n' || get_command[k] == '\0')
+//                    {
+//                        d++;
+//                    } else
+//                    {
+//                        elements[d] += get_command[k];
+//                    }
+//                }
+//
+//                disease = elements[1];
+//                date1 = elements[2];
+//                date2 = elements[3];
+//
+//                if(elements[4] == "") //no country given
+//                {
+//                    string my_country;
+//                    DirListNode *K = country_list;
+//                    while (K != nullptr)  //for every country of every worker
+//                    {
+//                        my_country = K->item->getCountryName();
+//
+//                        diseaseFrequency(disease, date1, date2, my_country, List);
+//                        K = K->nextNode;
+//                    }
+//                }
+//                else
+//                {
+//                    country = elements[4];
+//
+//                    string my_country;
+//                    DirListNode *K = country_list;
+//                    while (K != nullptr)
+//                    {
+//                        my_country = K->item->getCountryName();
+//
+//                        if (my_country == country) //found the country so this child has to work
+//                        {
+//                            diseaseFrequency(disease, date1, date2, country, List);
+//                            break; //there is no reason to search further as we look for only one country
+//                        }
+//                        K = K->nextNode;
+//                    }
+//
+//                }
+//
+//            }
+//            else if(strcmp(get_command, "/numPatientAdmissions") == 0 || strcmp(get_command, "/numPatientDischarges") == 0)
+//            {
+//                string status;
+//
+//                if(strcmp(get_command, "/numPatientAdmissions") == 0)
+//                    status = "ENTRY";
+//                else if(strcmp(get_command, "/numPatientDischarges") == 0)
+//                    status = "EXIT";
+//
+//                receive_message(p_to_w,get_command,buffer_size);
+//
+//                string elements[5];
+//                string country, disease, date1, date2, token;
+//                int k;
+//                int d = 0;
+//
+//                for (int k = 0; k < strlen(get_command); k++)   //cut string to parts
+//                {
+//                    if (get_command[k] == ' ' || get_command[k] == '\n' || get_command[k] == '\0')
+//                    {
+//                        d++;
+//                    } else
+//                    {
+//                        elements[d] += get_command[k];
+//                    }
+//                }
+//
+//                disease = elements[1];
+//                date1 = elements[2];
+//                date2 = elements[3];
+//
+//                if(elements[4] == "") //no country given
+//                {
+//                    string my_country;
+//                    DirListNode *K = country_list;
+//                    while (K != nullptr)  //for every country of every worker
+//                    {
+//                        my_country = K->item->getCountryName();
+//                        num_Patient_Status(status, disease, date1, date2, my_country, List);
+//                        K = K->nextNode;
+//                    }
+//                }
+//                else
+//                {
+//                    country = elements[4];
+//
+//                    string my_country;
+//                    DirListNode *K = country_list;
+//                    while (K != nullptr)
+//                    {
+//                        my_country = K->item->getCountryName();
+//
+//                        if (my_country == country) //found the country so this child has to work
+//                        {
+//                            num_Patient_Status(status, disease, date1, date2, country, List);
+//                            break; //there is no reason to search further as we look for only one country
+//                        }
+//                        K = K->nextNode;
+//                    }
+//
+//                }
+//            }
+//            else if(strcmp(get_command, "/searchPatientRecord") == 0)
+//            {
+//                receive_message(p_to_w,get_command,buffer_size);
+//
+//                string elements[2];
+//                string country, disease, date1, date2, token;
+//                string record_id;
+//                int d = 0;
+//
+//                for (int k = 0; k < strlen(get_command); k++)   //cut string to parts
+//                {
+//                    if (get_command[k] == ' ' || get_command[k] == '\n' || get_command[k] == '\0')
+//                    {
+//                        d++;
+//                    } else
+//                    {
+//                        elements[d] += get_command[k];
+//                    }
+//                }
+//
+//                record_id = elements[1];
+//                ListNode *N = List;
+//                while(N != nullptr)
+//                {
+//                    if(N->item->GetRecordId() == record_id)
+//                    {
+//                        N->item->printPatientRecord();
+//                    }
+//                    N = N->nextNode;
+//                }
+//            }
 
             else if(strcmp(get_command, "/Server IP") == 0)
             {
@@ -435,11 +436,10 @@ int main(int argc, char *argv[])
         if (connect(sock, serverptr, sizeof(server)) < 0)
             cout<<"error: connect\n";
 
-        write(sock, &id, 4);
+//        write(sock, &id, 4);
+//        cout<<"Wrote "<<id<<endl;
 
         printf("Connecting to port %d\n", port);
-
-
 
 
         ////////////////////////////////////////////////////////////////
@@ -477,24 +477,15 @@ int main(int argc, char *argv[])
                     temp_table.initializeHashTable(temp,100);  //this hash table is exclusively for current date file and helps for stats
 
                     //find stats:
-                    send_message(de->d_name, w_to_p, buffer_size); //de->d_name = date
-                    send_message(name, w_to_p, buffer_size);  //name = country
-                    temp_table.statistics(w_to_p, buffer_size);
+                    socket_write_string(sock, de->d_name); //de->d_name = date
+                    socket_write_string(sock, name);  //name = country
+                    temp_table.statistics(sock);
+                    socket_write_size_t(sock, 0);
                 }
             }
             L = L->nextNode;
         }   //after this while, worker has a full list of patient records
         send_message("/Done", w_to_p,buffer_size);  //worker has send statistics and is ready to receive commands
-
-
-
-
-
-
-
-
-
-
 //        close(p_to_w);
     }
     //===================================PARENT=========================================

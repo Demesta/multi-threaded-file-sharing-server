@@ -151,6 +151,12 @@
 		<Unit filename="/home/demesta/Documents/syspro3/master/signal_handler.h">
 			<Option target="syspro2"/>
 		</Unit>
+		<Unit filename="/home/demesta/Documents/syspro3/master/sockets.cpp">
+			<Option target="syspro2"/>
+		</Unit>
+		<Unit filename="/home/demesta/Documents/syspro3/master/sockets.h">
+			<Option target="syspro2"/>
+		</Unit>
 		<Unit filename="/home/demesta/Documents/syspro3/master/utils.cpp">
 			<Option target="syspro2"/>
 		</Unit>

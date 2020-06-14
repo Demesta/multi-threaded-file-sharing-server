@@ -10,6 +10,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/syspro2.dir/diseaseHashTable.cpp.o"
   "CMakeFiles/syspro2.dir/main.cpp.o"
   "CMakeFiles/syspro2.dir/signal_handler.cpp.o"
+  "CMakeFiles/syspro2.dir/sockets.cpp.o"
   "CMakeFiles/syspro2.dir/utils.cpp.o"
   "syspro2"
   "syspro2.pdb"
