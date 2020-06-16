@@ -308,44 +308,50 @@ int statistics_connection(int socket)
     return 0;
 }
 
-//int query_connection(int socket)
-//{
-//    char query[128];
-//    size_t query_size;
-//
+int query_connection(int socket)
+{
+    char query[128];
+    size_t query_size;
+
 //    if ((query_size = socket_read_str(socket, query, 128)) < 0)
 //    {
 //        cout << "failed to read query" << endl;
 //        return -1;
 //    }
+
+    int i;
+    socket_read_int(socket, &i);
+    //socket_read_str(socket, query, 128);
+
+    cout<<"i got from client: "<<i<<endl;
+
+   // int type = query_type(query, query_size);
+
+//    if (type == 0)
+//    {
+//        // handle /diseaseFrequency
+//    } else if (type == 1)
+//    {
+//        // handle /topk-AgeRanges
+//        int k;
+//        char disease[32];
+//        char country[32];
+//        char dateFrom[16];
+//        char dateTo[16];
 //
-//   // int type = query_type(query, query_size);
+//        Worker *worker = find_worker(country);
+//        char result[1024];
+//        size_t result_size;
+//        if ((result_size = worker->topk_age_ranges(k, disease, dateFrom, dateTo, result, 1024)) < 0)
+//        {
+//            cout << "query failed on worker" << endl;
+//        }
 //
-////    if (type == 0)
-////    {
-////        // handle /diseaseFrequency
-////    } else if (type == 1)
-////    {
-////        // handle /topk-AgeRanges
-////        int k;
-////        char disease[32];
-////        char country[32];
-////        char dateFrom[16];
-////        char dateTo[16];
-////
-////        Worker *worker = find_worker(country);
-////        char result[1024];
-////        size_t result_size;
-////        if ((result_size = worker->topk_age_ranges(k, disease, dateFrom, dateTo, result, 1024)) < 0)
-////        {
-////            cout << "query failed on worker" << endl;
-////        }
-////
-////        socket_write_str(socket, result, result_size);
-////    }
-//
-//    return 0;
-//}
+//        socket_write_str(socket, result, result_size);
+//    }
+
+    return 0;
+}
 
 mutex work_variable_mutex;
 condition_variable work_variable;
@@ -396,10 +402,12 @@ void task(int i)    //slave threads' work
 //            while(read(item.socket, &j, sizeof(int)) <= 0);
 //            LOG("%d", j);
         }
-//        else if (item.type == 1)   //query from client
-//        {
-//            query_connection(item.socket);
-//        }
+        else if (item.type == 1)   //query from client
+        {
+            cout << "thread " << i << " accepting queries from socket " << item.socket << endl;
+            query_connection(item.socket);
+
+        }
 //
 //        close(item.socket);
     }
@@ -441,11 +449,12 @@ int main(int argc, char *argv[])       //main thread
             buffer_write(item);
         }
 
-//        if ((socket = accept(query_socket, nullptr, nullptr)) > 0)
-//        {
-//            work_item item{.socket=socket, .type=1};
-//            buffer_write(item);
-//        }
+        if ((socket = accept(query_socket, nullptr, nullptr)) > 0)
+        {
+            cout<<"query conection at "<<query_socket<<endl;
+            work_item item{.socket=socket, .type=1};
+            buffer_write(item);
+        }
     }
 
     for (int i = 1; i <= n; i++)   //join

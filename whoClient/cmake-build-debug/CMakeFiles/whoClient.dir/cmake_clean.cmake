@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/whoClient.dir/main.cpp.o"
+  "CMakeFiles/whoClient.dir/sockets.cpp.o"
   "whoClient"
   "whoClient.pdb"
 )

@@ -1,72 +1,97 @@
 /* inet_str_client.c: Internet stream sockets client */
 #include <stdio.h>
+#include <iostream>
+#include <fstream>
+#include <sys/wait.h>         /* sockets */
 #include <sys/types.h>         /* sockets */
 #include <sys/socket.h>         /* sockets */
 #include <netinet/in.h>         /* internet sockets */
-#include <unistd.h>          /* read, write, close */
 #include <netdb.h>             /* gethostbyaddr */
+#include <unistd.h>             /* fork */
 #include <stdlib.h>             /* exit */
-#include <string.h>             /* strlen */
+#include <ctype.h>             /* toupper */
+#include <signal.h>          /* signal */
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <cstring>
+#include "Arguments.h"
+#include "sockets.h"
 
-void perror_exit(char *message);
+using namespace std;
 
-int main(int argc, char *argv[])
+void task(string query, int port, string ip, int id)
 {
-    int port, sock, i;
+    cout<<"i am thread "<<id<< " and i have the message: "<<query<<endl;
+
+    int sock;
     char buf[256];
     struct sockaddr_in server;
     struct sockaddr *serverptr = (struct sockaddr *) &server;
     struct hostent *rem;
 
-    if (argc != 3)
-    {
-        printf("Please give host name and port number\n");
-        exit(1);
-    }
-
     if ((sock = socket(PF_INET, SOCK_STREAM, 0)) < 0)
-        perror_exit("socket");
+        cout<<"error: socket\n";
 
-    /* Find server address */
-    if ((rem = gethostbyname(argv[1])) == NULL)
-    {
-        herror("gethostbyname");
-        exit(1);
-    }
+    int len = ip.length();
+    char hostname[len];
+    strcpy(hostname, ip.c_str());
+    rem = gethostbyname(hostname);
 
-    port = atoi(argv[2]); /*Convert port number to integer*/
-    server.sin_family = AF_INET;       /* Internet domain */
+    server.sin_family = AF_INET;
     memcpy(&server.sin_addr, rem->h_addr, rem->h_length);
-    server.sin_port = htons(port);         /* Server port */
-
+    server.sin_port = htons(port);
 
     if (connect(sock, serverptr, sizeof(server)) < 0)
-        perror_exit("connect");
+        cout<<"error: connect\n";
 
-    printf("Connecting to %s port %d\n", argv[1], port);
+    write(sock, &id, sizeof(int));
+    cout<<"Wrote "<<id<<endl;
 
-    do
-    {
-        printf("Give input string: ");
-        fgets(buf, sizeof(buf), stdin);    /* Read from stdin*/
-        for (i = 0; buf[i] != '\0'; i++)
-        { /* For every char */
-            /* Send i-th character */
-            if (write(sock, buf + i, 1) < 0)
-                perror_exit("write");
-            /* receive i-th character transformed */
-            if (read(sock, buf + i, 1) < 0)
-                perror_exit("read");
-        }
-        printf("Received string: %s", buf);
-    }
+    int length = query.length();
+    char query_send[length+1];
+    strcpy(query_send, query.c_str());
 
-    while (strcmp(buf, "END\n") != 0);
-        close(sock);
+    //write(sock, query_send, sizeof(length+1));
+
+    printf("Connecting to port %d\n", port);
+
 }
 
-void perror_exit(char *message)
+int main(int argc, char *argv[])
 {
-    perror(message);
-    exit(EXIT_FAILURE);
+    Arguments args;
+    initializeArguments(args, argv);
+
+    int server_port = args.server_port;
+    string server_ip = args.server_ip;
+    int n = args.num_threads;
+    string query_file = args.query_file;
+
+    thread *threads[n];
+
+    int length = query_file.length();
+    char qfile[length+1];
+    strcpy(qfile, query_file.c_str());
+    ifstream file(qfile);
+    string query;
+    int curr_threads=1;
+
+    while(getline(file, query))// read each line
+    {
+        if(curr_threads <= n) //no more than n threads
+        {
+            threads[curr_threads] = new thread(task, query, server_port, server_ip, curr_threads);
+            curr_threads++;
+        }
+
+    }
+
+    for (int i = 1; i < curr_threads; i++)   //join
+    {
+        threads[i]->join();
+    }
+
+
+    return 0;
 }

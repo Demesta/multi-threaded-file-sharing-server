@@ -150,6 +150,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/whoClient.dir/build.make CMakeFiles/whoClient.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+sockets.o: sockets.cpp.o
+
+.PHONY : sockets.o
+
+# target to build an object file
+sockets.cpp.o:
+	$(MAKE) -f CMakeFiles/whoClient.dir/build.make CMakeFiles/whoClient.dir/sockets.cpp.o
+.PHONY : sockets.cpp.o
+
+sockets.i: sockets.cpp.i
+
+.PHONY : sockets.i
+
+# target to preprocess a source file
+sockets.cpp.i:
+	$(MAKE) -f CMakeFiles/whoClient.dir/build.make CMakeFiles/whoClient.dir/sockets.cpp.i
+.PHONY : sockets.cpp.i
+
+sockets.s: sockets.cpp.s
+
+.PHONY : sockets.s
+
+# target to generate assembly for a file
+sockets.cpp.s:
+	$(MAKE) -f CMakeFiles/whoClient.dir/build.make CMakeFiles/whoClient.dir/sockets.cpp.s
+.PHONY : sockets.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,6 +189,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... sockets.o"
+	@echo "... sockets.i"
+	@echo "... sockets.s"
 .PHONY : help
 
 

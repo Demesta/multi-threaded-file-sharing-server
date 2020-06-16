@@ -82,7 +82,16 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/demesta/Documents/syspro3/whoClient/Arguments.h">
+			<Option target="whoClient"/>
+		</Unit>
 		<Unit filename="/home/demesta/Documents/syspro3/whoClient/main.cpp">
+			<Option target="whoClient"/>
+		</Unit>
+		<Unit filename="/home/demesta/Documents/syspro3/whoClient/sockets.cpp">
+			<Option target="whoClient"/>
+		</Unit>
+		<Unit filename="/home/demesta/Documents/syspro3/whoClient/sockets.h">
 			<Option target="whoClient"/>
 		</Unit>
 		<Unit filename="/home/demesta/Documents/syspro3/whoClient/CMakeLists.txt">
