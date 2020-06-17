@@ -45,14 +45,24 @@ void task(string query, int port, string ip, int id)
     if (connect(sock, serverptr, sizeof(server)) < 0)
         cout<<"error: connect\n";
 
-    write(sock, &id, sizeof(int));
-    cout<<"Wrote "<<id<<endl;
+ //   write(sock, &id, sizeof(int));
+  //  cout<<"Wrote "<<id<<endl;
 
     int length = query.length();
     char query_send[length+1];
     strcpy(query_send, query.c_str());
 
-    //write(sock, query_send, sizeof(length+1));
+    //int size = length+1;
+    int size = 100;
+//    write(sock, &size, sizeof(int));
+//    write(sock, query_send, sizeof(length+1));
+
+    int l=3;
+    char m[3]="hi";
+    string me = "hi";
+//    write(sock, &l, sizeof(int));
+//    write(sock, m, sizeof(3));
+socket_write_string(sock, query_send);
 
     printf("Connecting to port %d\n", port);
 

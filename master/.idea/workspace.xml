@@ -30,26 +30,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e4251418-f537-426b-880c-ebabf7cf721d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../whoClient/Arguments.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../whoClient/sockets.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../whoClient/sockets.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../whoClient/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/progress.marks" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/progress.marks" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/whoClient.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/whoClient.dir/DependInfo.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/whoClient.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/whoClient.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/whoClient.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/whoClient.dir/cmake_clean.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/whoClient.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/whoClient.dir/depend.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/whoClient.dir/flags.make" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/whoClient.dir/flags.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/whoClient.dir/link.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/whoClient.dir/link.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/whoClient.dir/progress.make" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/whoClient.dir/progress.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/whoClient.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/whoClient.cbp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/whoClient.dir/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/CMakeFiles/whoClient.dir/main.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../whoClient/cmake-build-debug/whoClient" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/cmake-build-debug/whoClient" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../whoClient/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../whoClient/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../whoServer/Worker_list.h" beforeDir="false" afterPath="$PROJECT_DIR$/../whoServer/Worker_list.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../whoServer/cmake-build-debug/CMakeFiles/whoServer.dir/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/../whoServer/cmake-build-debug/CMakeFiles/whoServer.dir/main.cpp.o" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../whoServer/cmake-build-debug/whoServer" beforeDir="false" afterPath="$PROJECT_DIR$/../whoServer/cmake-build-debug/whoServer" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../whoServer/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../whoServer/main.cpp" afterDir="false" />
@@ -85,7 +69,7 @@
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RunManager">
-    <configuration name="syspro2" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-w 4 -b 100 -s localhost -p 9002 -i input_dir" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="syspro2" TARGET_NAME="syspro2" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="syspro2" RUN_TARGET_NAME="syspro2">
+    <configuration name="syspro2" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-w 4 -b 100 -s localhost -p 8008 -i input_dir" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="syspro2" TARGET_NAME="syspro2" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="syspro2" RUN_TARGET_NAME="syspro2">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -167,7 +151,9 @@
       <workItem from="1592066695949" duration="1488000" />
       <workItem from="1592080016221" duration="2415000" />
       <workItem from="1592149598038" duration="11266000" />
-      <workItem from="1592253648244" duration="6279000" />
+      <workItem from="1592253648244" duration="7246000" />
+      <workItem from="1592321069689" duration="4200000" />
+      <workItem from="1592345614285" duration="5511000" />
     </task>
     <servers />
   </component>
@@ -187,10 +173,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="591" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1592271434307">
+    <state x="591" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1592324365896">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
-    <state x="591" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1034@0.0.1920.1034" timestamp="1592271434307" />
+    <state x="591" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1034@0.0.1920.1034" timestamp="1592324365896" />
     <state x="241" y="168" width="472" height="697" key="#com.intellij.ide.util.MemberChooser" timestamp="1590565611313">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
@@ -201,26 +187,26 @@
     <state x="466" y="118" width="424" height="482" key="FileChooserDialogImpl/0.0.1366.720/1366.0.1280.1024@0.0.1366.720" timestamp="1589227097744" />
     <state x="1803" y="168" key="FileChooserDialogImpl/0.0.1366.720/1366.0.1280.1024@1366.0.1280.1024" timestamp="1589854048621" />
     <state x="656" y="170" width="534" height="598" key="FileChooserDialogImpl/0.0.1920.1034@0.0.1920.1034" timestamp="1591133978138" />
-    <state width="900" height="474" key="GridCell.Tab.0.bottom" timestamp="1592275470798">
+    <state width="1864" height="389" key="GridCell.Tab.0.bottom" timestamp="1592362090714">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
     <state width="1280" height="743" key="GridCell.Tab.0.bottom/0.0.1366.720/1366.0.1280.1024@1366.0.1280.1024" timestamp="1589852967578" />
-    <state width="900" height="474" key="GridCell.Tab.0.bottom/0.0.1920.1034@0.0.1920.1034" timestamp="1592275470798" />
-    <state width="900" height="474" key="GridCell.Tab.0.center" timestamp="1592275470798">
+    <state width="1864" height="389" key="GridCell.Tab.0.bottom/0.0.1920.1034@0.0.1920.1034" timestamp="1592362090714" />
+    <state width="1864" height="389" key="GridCell.Tab.0.center" timestamp="1592362090714">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
     <state width="1280" height="743" key="GridCell.Tab.0.center/0.0.1366.720/1366.0.1280.1024@1366.0.1280.1024" timestamp="1589852967578" />
-    <state width="900" height="474" key="GridCell.Tab.0.center/0.0.1920.1034@0.0.1920.1034" timestamp="1592275470798" />
-    <state width="900" height="474" key="GridCell.Tab.0.left" timestamp="1592275470797">
+    <state width="1864" height="389" key="GridCell.Tab.0.center/0.0.1920.1034@0.0.1920.1034" timestamp="1592362090714" />
+    <state width="1864" height="389" key="GridCell.Tab.0.left" timestamp="1592362090713">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
     <state width="1280" height="743" key="GridCell.Tab.0.left/0.0.1366.720/1366.0.1280.1024@1366.0.1280.1024" timestamp="1589852967578" />
-    <state width="900" height="474" key="GridCell.Tab.0.left/0.0.1920.1034@0.0.1920.1034" timestamp="1592275470797" />
-    <state width="900" height="474" key="GridCell.Tab.0.right" timestamp="1592275470798">
+    <state width="1864" height="389" key="GridCell.Tab.0.left/0.0.1920.1034@0.0.1920.1034" timestamp="1592362090713" />
+    <state width="1864" height="389" key="GridCell.Tab.0.right" timestamp="1592362090714">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
     <state width="1280" height="743" key="GridCell.Tab.0.right/0.0.1366.720/1366.0.1280.1024@1366.0.1280.1024" timestamp="1589852967578" />
-    <state width="900" height="474" key="GridCell.Tab.0.right/0.0.1920.1034@0.0.1920.1034" timestamp="1592275470798" />
+    <state width="1864" height="389" key="GridCell.Tab.0.right/0.0.1920.1034@0.0.1920.1034" timestamp="1592362090714" />
     <state width="1864" height="302" key="GridCell.Tab.1.bottom" timestamp="1590836960884">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>

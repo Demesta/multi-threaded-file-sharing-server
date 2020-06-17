@@ -25,4 +25,14 @@ void insertListNode(int n, Worker_list_node *&L)
     }
 }
 
+void print(Worker_list_node *&L)
+{
+    Worker_list_node *N = L;
+    while(N != nullptr)
+    {
+        cout<<N->port<<endl;
+        N = N->nextNode;
+    }
+}
+
 #endif //WHOSERVER__WORKER_LIST_H_

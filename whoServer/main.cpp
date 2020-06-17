@@ -253,6 +253,10 @@ int statistics_connection(int socket)
     int date_size;
     char date_str[11];
 
+    int port;
+    socket_read_int(socket, &port);
+    insertListNode(port, master_workers); //save worker's port
+
     while ((date_size = socket_read_str(socket, date_str, 11)) > 0)
     {
         if ((country_size = socket_read_str(socket, country, 32)) < 0)
@@ -311,7 +315,7 @@ int statistics_connection(int socket)
 int query_connection(int socket)
 {
     char query[128];
-    size_t query_size;
+    int query_size;
 
 //    if ((query_size = socket_read_str(socket, query, 128)) < 0)
 //    {
@@ -319,11 +323,21 @@ int query_connection(int socket)
 //        return -1;
 //    }
 
-    int i;
-    socket_read_int(socket, &i);
-    //socket_read_str(socket, query, 128);
+    socket_read_str(socket, query, 128);  //query for master
+    cout<<"i got from client: "<<query<<endl;
 
-    cout<<"i got from client: "<<i<<endl;
+    int port;
+    Worker_list_node *N = master_workers;
+    while(N != nullptr)
+    {
+        port = N->port;
+        N = N->nextNode;
+
+        //connect with each port and send the query to every worker
+
+    }
+
+
 
    // int type = query_type(query, query_size);
 
@@ -413,6 +427,21 @@ void task(int i)    //slave threads' work
     }
 }
 
+void helper_main(int query_socket)
+{
+    while(running)
+    {
+        int socket;
+        if ((socket = accept(query_socket, nullptr, nullptr)) > 0)    //TODO edw kati ginetai
+        {
+            cout<<"query conection at "<<query_socket<<endl;
+            work_item item{.socket=socket, .type=1};
+            buffer_write(item);
+        }
+    }
+
+}
+
 int main(int argc, char *argv[])       //main thread
 {
     Arguments args;
@@ -440,6 +469,7 @@ int main(int argc, char *argv[])       //main thread
     int statistics_socket = open_socket(args.statistics_port);
     int query_socket = open_socket(args.query_port);
 
+    auto helper = thread(helper_main, query_socket);
     while (running)
     {
         int socket;
@@ -449,18 +479,19 @@ int main(int argc, char *argv[])       //main thread
             buffer_write(item);
         }
 
-        if ((socket = accept(query_socket, nullptr, nullptr)) > 0)
-        {
-            cout<<"query conection at "<<query_socket<<endl;
-            work_item item{.socket=socket, .type=1};
-            buffer_write(item);
-        }
+//        if ((socket = accept(query_socket, nullptr, nullptr)) > 0)    //TODO edw kati ginetai
+//        {
+//            cout<<"query conection at "<<query_socket<<endl;
+//            work_item item{.socket=socket, .type=1};
+//            buffer_write(item);
+//        }
     }
 
     for (int i = 1; i <= n; i++)   //join
     {
         threads[i]->join();
     }
+    helper.join();
 
     return 0;
 

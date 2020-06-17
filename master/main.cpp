@@ -441,6 +441,7 @@ int main(int argc, char *argv[])
 
         printf("Connecting to port %d\n", port);
 
+        socket_write_int(sock, my_port);  //send worker's port to server
 
         ////////////////////////////////////////////////////////////////
 
