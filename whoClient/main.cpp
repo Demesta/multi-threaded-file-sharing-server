@@ -62,7 +62,8 @@ void task(string query, int port, string ip, int id)
     string me = "hi";
 //    write(sock, &l, sizeof(int));
 //    write(sock, m, sizeof(3));
-socket_write_string(sock, query_send);
+
+    socket_write_string(sock, query_send);
 
     printf("Connecting to port %d\n", port);
 
@@ -102,6 +103,6 @@ int main(int argc, char *argv[])
         threads[i]->join();
     }
 
-
+    sleep(10);
     return 0;
 }

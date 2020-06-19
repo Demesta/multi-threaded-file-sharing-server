@@ -14,6 +14,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <cstring>
+#include <arpa/inet.h>
 #include "Arguments.h"
 #include "Worker_list.h"
 #include "Hash.h"
@@ -106,8 +107,36 @@ int buffer_capacity = 0;
 int buffer_size = 0;
 
 Worker_list_node *master_workers;
+Worker_list_node *master_sockets;
 
 mutex cout_mutex;
+
+int open_socket(int port)
+{
+    // listen on ports
+    int sock;
+    struct sockaddr_in server;
+    struct sockaddr *server_ptr = (struct sockaddr *) &server;
+
+    if ((sock = socket(PF_INET, SOCK_STREAM, 0)) < 0)  //create socket
+        perror_exit("socket");
+
+    server.sin_family = AF_INET;
+    server.sin_addr.s_addr = htonl(INADDR_ANY);
+    server.sin_port = htons(port);
+
+    if (bind(sock, server_ptr, sizeof(server)) < 0)  //bind socket
+        perror_exit("bind");
+
+    if (listen(sock, 5) < 0) perror_exit("listen");   //listen for connections
+    return sock;
+}
+
+void perror_exit(char *message)
+{
+    perror(message);
+    exit(EXIT_FAILURE);
+}
 
 int __socket_safe_read(int socket, void *buffer, size_t buffer_size)
 {
@@ -160,6 +189,7 @@ int socket_read_str(int socket, char *buffer, size_t buffer_size)
 
     if ((str_size + 1) > buffer_size)
     {
+        cout<<"str= "<<str_size<<" and buffer= "<<buffer_size<<endl;
         LOG("buffer overflow");
         return -1;
     }
@@ -190,6 +220,13 @@ int socket_write_str(int socket, char *buffer, size_t buffer_size)
     }
 
     return __socket_safe_write(socket, buffer, buffer_size);
+}
+
+int socket_write_string(int socket, std::string str)
+{
+    char *str_ptr = const_cast<char *>(str.c_str());
+    size_t str_size = str.length();
+    return socket_write_str(socket, str_ptr, str_size);
 }
 
 int buffer_read(work_item &item)    //read socket from buffer
@@ -231,7 +268,7 @@ int buffer_write(work_item &value)    //write socket to buffer
     return 0;
 }
 
-int statistics_connection(int socket)
+int statistics_connection(int sock)
 {
 //    char worker_address[32];
 //    if (socket_read_str(socket, worker_address, 32) < 0)
@@ -254,40 +291,53 @@ int statistics_connection(int socket)
     char date_str[11];
 
     int port;
-    socket_read_int(socket, &port);
+    socket_read_int(sock, &port);
     insertListNode(port, master_workers); //save worker's port
 
-    while ((date_size = socket_read_str(socket, date_str, 11)) > 0)
-    {
-        if ((country_size = socket_read_str(socket, country, 32)) < 0)
-        {
+    while(1){
+        if ((date_size = socket_read_str(sock, date_str, 11)) < 0){
+            cout << "failed to read" << endl;
             return -1;
         }
 
-//            worker_add_country(worker, country, country_size);
+        if(strcmp(date_str,"/Done" )== 0)
+            break;
+
+        cout<<date_str<<endl;
+
+        if((country_size = socket_read_str(sock, country, 32)) < 0){
+            cout << "failed to read" << endl;
+            return -1;
+        }
+
+        cout<<country<<endl;
 
         char disease[32];
         int disease_size;
-        while ((disease_size = socket_read_str(socket, disease, 32)) > 0)
+        while ((disease_size = socket_read_str(sock, disease, 32)) > 0)
         {
+            if(strcmp(disease,"/Done")== 0)
+                break;
+
+
             cout << disease << endl;
             int age20, age40, age60, age60Plus;
-            if (socket_read_int(socket, &age20) < 0)
+            if (socket_read_int(sock, &age20) < 0)
             {
                 cout << "failed to read" << endl;
                 return -1;
             }
-            if (socket_read_int(socket, &age40) < 0)
+            if (socket_read_int(sock, &age40) < 0)
             {
                 cout << "failed to read" << endl;
                 return -1;
             }
-            if (socket_read_int(socket, &age60) < 0)
+            if (socket_read_int(sock, &age60) < 0)
             {
                 cout << "failed to read" << endl;
                 return -1;
             }
-            if (socket_read_int(socket, &age60Plus) < 0)
+            if (socket_read_int(sock, &age60Plus) < 0)
             {
                 cout << "failed to read" << endl;
                 return -1;
@@ -298,10 +348,60 @@ int statistics_connection(int socket)
                 cout << "Age 0-20 : " << age20 << endl;
                 cout << "Age 20-40 : " << age40 << endl;
                 cout << "Age 40-60 : " << age60 << endl;
-                cout << "Age 60+ : " << age60Plus << endl;
+                cout << "Age 60+ : " << age60Plus << endl<<endl;
             }
         }
+
+
     }
+
+
+
+//    while ((date_size = socket_read_str(sock, date_str, 11)) > 0)
+//    {
+//        if ((country_size = socket_read_str(sock, country, 32)) < 0)
+//        {
+//            return -1;
+//        }
+//
+////            worker_add_country(worker, country, country_size);
+//
+//        char disease[32];
+//        int disease_size;
+//        while ((disease_size = socket_read_str(sock, disease, 32)) > 0)
+//        {
+//            cout << disease << endl;
+//            int age20, age40, age60, age60Plus;
+//            if (socket_read_int(sock, &age20) < 0)
+//            {
+//                cout << "failed to read" << endl;
+//                return -1;
+//            }
+//            if (socket_read_int(sock, &age40) < 0)
+//            {
+//                cout << "failed to read" << endl;
+//                return -1;
+//            }
+//            if (socket_read_int(sock, &age60) < 0)
+//            {
+//                cout << "failed to read" << endl;
+//                return -1;
+//            }
+//            if (socket_read_int(sock, &age60Plus) < 0)
+//            {
+//                cout << "failed to read" << endl;
+//                return -1;
+//            }
+//
+//            {
+//                lock_guard<mutex> cout_lock(cout_mutex);
+//                cout << "Age 0-20 : " << age20 << endl;
+//                cout << "Age 20-40 : " << age40 << endl;
+//                cout << "Age 40-60 : " << age60 << endl;
+//                cout << "Age 60+ : " << age60Plus << endl;
+//            }
+//        }
+//    }
 
     if (date_size < 0)
     {
@@ -312,9 +412,11 @@ int statistics_connection(int socket)
     return 0;
 }
 
-int query_connection(int socket)
+mutex open_socket_mutex;
+
+int query_connection(int client_sock)
 {
-    char query[128];
+    char query[24];
     int query_size;
 
 //    if ((query_size = socket_read_str(socket, query, 128)) < 0)
@@ -323,20 +425,76 @@ int query_connection(int socket)
 //        return -1;
 //    }
 
-    socket_read_str(socket, query, 128);  //query for master
-    cout<<"i got from client: "<<query<<endl;
+    query_size=socket_read_str(client_sock, query, 24);  //query for master
+    cout<<"i got from client: "<<query<< " of size "<<query_size<<endl;
 
-    int port;
-    Worker_list_node *N = master_workers;
-    while(N != nullptr)
+    string message = "";
+    for(int h=0; h < query_size; h++)
     {
-        port = N->port;
+        message = message + query[h];
+    }
+    //cout<<"!!!! i send "<<message<<endl;
+
+    Worker_list_node *N = master_sockets;
+    while(N != nullptr)    //send query to every worker
+    {
+        int s = N->port;
         N = N->nextNode;
 
-        //connect with each port and send the query to every worker
-
+        socket_write_string(s, message);
     }
 
+    Worker_list_node *L = master_sockets;
+    while(L != nullptr)    //get answers
+    {
+        int s = L->port;
+        L = L->nextNode;
+
+        int size;
+        char answer[32];
+        while(1)
+        {
+            socket_read_str(s, answer, 32);
+
+            if(strcmp(answer, "/Done") == 0)
+                break;
+            cout<<"-"<<answer<<endl;
+
+        }
+//        while((size = socket_read_str(s, answer, 32)) > 0)
+//        {
+//            cout<<"-"<<answer<<endl;
+//        }
+    }
+
+
+//    int port,master_sock,i=4;
+//    struct sockaddr_in server;
+//    Worker_list_node *N = master_workers;
+//    while(N != nullptr)   //connect with each port and send the query to every worker
+//    {
+//        port = N->port;
+//        N = N->nextNode;
+//
+// //       master_sock = open_socket(port);
+// //       socket_write_int(master_sock, &i);
+//
+////to panw 'h to katw
+//
+//
+//        struct sockaddr* serverptr = (struct sockaddr*)&server;
+//        struct hostent *rem;
+//
+//        master_sock = socket(PF_INET, SOCK_STREAM, 0);
+//
+//        rem = gethostbyname("localhost");
+//        server.sin_family = AF_INET;
+//        memcpy(&server.sin_addr, rem->h_addr, rem->h_length);
+//        server.sin_port = htons(port);
+//        connect(master_sock, serverptr, sizeof(server));
+//
+//        socket_write_int(master_sock, &i);
+//    }
 
 
    // int type = query_type(query, query_size);
@@ -369,33 +527,6 @@ int query_connection(int socket)
 
 mutex work_variable_mutex;
 condition_variable work_variable;
-
-int open_socket(int port)
-{
-    // listen on ports
-    int sock;
-    struct sockaddr_in server;
-    struct sockaddr *server_ptr = (struct sockaddr *) &server;
-
-    if ((sock = socket(PF_INET, SOCK_STREAM, 0)) < 0)  //create socket
-        perror_exit("socket");
-
-    server.sin_family = AF_INET;
-    server.sin_addr.s_addr = htonl(INADDR_ANY);
-    server.sin_port = htons(port);
-
-    if (bind(sock, server_ptr, sizeof(server)) < 0)  //bind socket
-        perror_exit("bind");
-
-    if (listen(sock, 5) < 0) perror_exit("listen");   //listen for connections
-    return sock;
-}
-
-void perror_exit(char *message)
-{
-    perror(message);
-    exit(EXIT_FAILURE);
-}
 
 void task(int i)    //slave threads' work
 {
@@ -431,11 +562,11 @@ void helper_main(int query_socket)
 {
     while(running)
     {
-        int socket;
-        if ((socket = accept(query_socket, nullptr, nullptr)) > 0)    //TODO edw kati ginetai
+        int sock;
+        if ((sock = accept(query_socket, nullptr, nullptr)) > 0)    //TODO edw kati ginetai
         {
-            cout<<"query conection at "<<query_socket<<endl;
-            work_item item{.socket=socket, .type=1};
+            cout<<"query conection at "<<sock<<endl;
+            work_item item{.socket=sock, .type=1};
             buffer_write(item);
         }
     }
@@ -475,6 +606,16 @@ int main(int argc, char *argv[])       //main thread
         int socket;
         if ((socket = accept(statistics_socket, nullptr, nullptr)) > 0)
         {
+            insertListNode(socket, master_sockets);
+            ///GET-IP////
+            sockaddr_in addr;
+            socklen_t addr_size;
+            char masterip[100];
+            getpeername(socket, (struct sockaddr *)&addr, &addr_size);
+            strcpy(masterip, inet_ntoa(addr.sin_addr));
+            cout<<"the ip is "<<masterip<<endl;
+            /////////////
+
             work_item item{.socket=socket, .type=0};
             buffer_write(item);
         }

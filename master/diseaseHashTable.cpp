@@ -62,13 +62,15 @@ void diseaseHashTable::statistics(int socket)
                     socket_write_int(socket, ages_40);
                     socket_write_int(socket, ages_60);
                     socket_write_int(socket, ages_60plus);
+
+                    cout<<disease<<endl<<ages_20<<endl<<ages_40<<endl<<ages_60<<endl<<ages_60plus<<endl;
                 }
             }
             it = it->next_bucket;
         }
     }
 
-    socket_write_size_t(socket, 0);
+    socket_write_string(socket, "/Done");
 }
 
 bool diseaseHashTable::treeExists(AVLTree *tree, PatientRecord *record)

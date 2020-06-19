@@ -479,15 +479,44 @@ int main(int argc, char *argv[])
 
                     //find stats:
                     socket_write_string(sock, de->d_name); //de->d_name = date
+                    cout<<de->d_name<<endl;
                     socket_write_string(sock, name);  //name = country
+                    cout<<name<<endl;
                     temp_table.statistics(sock);
-                    socket_write_size_t(sock, 0);
                 }
             }
             L = L->nextNode;
         }   //after this while, worker has a full list of patient records
+        socket_write_string(sock, "/Done");
         send_message("/Done", w_to_p,buffer_size);  //worker has send statistics and is ready to receive commands
-//        close(p_to_w);
+
+
+        while(1)
+        {
+            char get_command[50];
+            socket_read_str(sock, get_command, 50);
+            cout<<"Command: "<<get_command<<endl;
+
+            if (strcmp(get_command, "/listCountries") == 0)
+            {
+                DirListNode *N = country_list;
+                while (N != nullptr)
+                {
+                    string message= N->item->getCountryName() + " " + to_string(getpid());
+                    socket_write_string(sock, message);
+
+                    //cout << N->item->getCountryName() << " " << getpid() << endl;
+                    N = N->nextNode;
+                }
+                //socket_write_size_t(sock, 0);
+                socket_write_string(sock, "/Done");
+            }
+
+
+
+        }
+
+
     }
     //===================================PARENT=========================================
     else   //parent code
