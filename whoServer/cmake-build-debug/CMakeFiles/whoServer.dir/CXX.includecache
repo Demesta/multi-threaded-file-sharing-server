@@ -63,4 +63,16 @@ Hash.h
 /home/demesta/Documents/syspro3/whoServer/Hash.h
 List.h
 /home/demesta/Documents/syspro3/whoServer/List.h
+utils.h
+/home/demesta/Documents/syspro3/whoServer/utils.h
+
+/home/demesta/Documents/syspro3/whoServer/utils.h
+iostream
+-
+string
+-
+fstream
+-
+bits/stdc++.h
+-
 

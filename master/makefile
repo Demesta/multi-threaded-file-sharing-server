@@ -1,7 +1,7 @@
-OBJS 	= AVLTree.o Bucket.o countryHashTable.o diseaseHashTable.o Dir_list.o main.o PatientRecord.o utils.o HashTable.o signal_handler.o Dir_countries.o Records_list.o
-SOURCE	= AVLTree.cpp Bucket.cpp countryHashTable.cpp diseaseHashTable.cpp HashTable.cpp Dir_list.cpp main.cpp PatientRecord.cpp utils.cpp signal_handler.cpp Dir_countries.cpp Records_list.cpp
-HEADER  = AVLTree.h Bucket.h countryHashTable.h diseaseHashTable.h HashTable.h Dir_list.h PatientRecord.h utils.h TreeNode.h Arguments.h signal_handler.h Dir_countries.h Records_list.h 
-OUT  	= diseaseAggregator
+OBJS 	= AVLTree.o sockets.o Bucket.o countryHashTable.o diseaseHashTable.o Dir_list.o main.o PatientRecord.o utils.o HashTable.o signal_handler.o Dir_countries.o Records_list.o
+SOURCE	= AVLTree.cpp sockets.cpp Bucket.cpp countryHashTable.cpp diseaseHashTable.cpp HashTable.cpp Dir_list.cpp main.cpp PatientRecord.cpp utils.cpp signal_handler.cpp Dir_countries.cpp Records_list.cpp
+HEADER  = AVLTree.h Bucket.h sockets.h countryHashTable.h diseaseHashTable.h HashTable.h Dir_list.h PatientRecord.h utils.h TreeNode.h Arguments.h signal_handler.h Dir_countries.h Records_list.h 
+OUT  	= master
 CC	= g++
 FLAGS   = -c
 
@@ -44,10 +44,13 @@ Records_list.o: Records_list.cpp
 utils.o: utils.cpp
 	$(CC) $(FLAGS) utils.cpp
 
+sockets.o: sockets.cpp
+	$(CC) $(FLAGS) sockets.cpp
+
 
 
 run:
-	./diseaseAggregator -w 4 -b 100 -i input_dir
+	./master -w 4 -b 100 -s localhost -p 8008 -i input_dir
 
 clean:
 	rm -f $(OBJS) $(OUT)

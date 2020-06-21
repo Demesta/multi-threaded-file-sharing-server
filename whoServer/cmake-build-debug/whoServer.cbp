@@ -103,6 +103,12 @@
 		<Unit filename="/home/demesta/Documents/syspro3/whoServer/main.cpp">
 			<Option target="whoServer"/>
 		</Unit>
+		<Unit filename="/home/demesta/Documents/syspro3/whoServer/utils.cpp">
+			<Option target="whoServer"/>
+		</Unit>
+		<Unit filename="/home/demesta/Documents/syspro3/whoServer/utils.h">
+			<Option target="whoServer"/>
+		</Unit>
 		<Unit filename="/home/demesta/Documents/syspro3/whoServer/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

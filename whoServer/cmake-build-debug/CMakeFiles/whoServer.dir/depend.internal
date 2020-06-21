@@ -11,3 +11,7 @@ CMakeFiles/whoServer.dir/main.cpp.o
  /home/demesta/Documents/syspro3/whoServer/List.h
  /home/demesta/Documents/syspro3/whoServer/Worker_list.h
  /home/demesta/Documents/syspro3/whoServer/main.cpp
+ /home/demesta/Documents/syspro3/whoServer/utils.h
+CMakeFiles/whoServer.dir/utils.cpp.o
+ /home/demesta/Documents/syspro3/whoServer/utils.cpp
+ /home/demesta/Documents/syspro3/whoServer/utils.h

@@ -26,13 +26,13 @@ void insertListNode(PatientRecord* item, ListNode *&L)
     }
 }
 
-void printList(ListNode *L)
+void printList(ListNode *L, int sock)
 {
     ListNode *N = L;
 
     while(N != nullptr)
     {
-        N->item->printPatientRecord();
+        N->item->printPatientRecord(sock);
         N = N->nextNode;
     }
 }

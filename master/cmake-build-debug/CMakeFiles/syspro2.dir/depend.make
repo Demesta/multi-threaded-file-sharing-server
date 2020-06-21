@@ -28,6 +28,7 @@ CMakeFiles/syspro2.dir/HashTable.cpp.o: ../Records_list.h
 
 CMakeFiles/syspro2.dir/PatientRecord.cpp.o: ../PatientRecord.cpp
 CMakeFiles/syspro2.dir/PatientRecord.cpp.o: ../PatientRecord.h
+CMakeFiles/syspro2.dir/PatientRecord.cpp.o: ../sockets.h
 
 CMakeFiles/syspro2.dir/Records_list.cpp.o: ../PatientRecord.h
 CMakeFiles/syspro2.dir/Records_list.cpp.o: ../Records_list.cpp
@@ -79,6 +80,7 @@ CMakeFiles/syspro2.dir/sockets.cpp.o: ../sockets.h
 CMakeFiles/syspro2.dir/utils.cpp.o: ../Dir_list.h
 CMakeFiles/syspro2.dir/utils.cpp.o: ../PatientRecord.h
 CMakeFiles/syspro2.dir/utils.cpp.o: ../Records_list.h
+CMakeFiles/syspro2.dir/utils.cpp.o: ../sockets.h
 CMakeFiles/syspro2.dir/utils.cpp.o: ../utils.cpp
 CMakeFiles/syspro2.dir/utils.cpp.o: ../utils.h
 

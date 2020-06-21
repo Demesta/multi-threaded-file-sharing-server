@@ -20,9 +20,13 @@
 
 using namespace std;
 
+mutex safe_print;
+
 void task(string query, int port, string ip, int id)
 {
+    safe_print.lock();
     cout<<"i am thread "<<id<< " and i have the message: "<<query<<endl;
+    safe_print.unlock();
 
     int sock;
     char buf[256];
@@ -45,28 +49,23 @@ void task(string query, int port, string ip, int id)
     if (connect(sock, serverptr, sizeof(server)) < 0)
         cout<<"error: connect\n";
 
- //   write(sock, &id, sizeof(int));
-  //  cout<<"Wrote "<<id<<endl;
-
     int length = query.length();
     char query_send[length+1];
     strcpy(query_send, query.c_str());
 
-    //int size = length+1;
-    int size = 100;
-//    write(sock, &size, sizeof(int));
-//    write(sock, query_send, sizeof(length+1));
+    socket_write_string(sock, query_send);  //send query
 
-    int l=3;
-    char m[3]="hi";
-    string me = "hi";
-//    write(sock, &l, sizeof(int));
-//    write(sock, m, sizeof(3));
+    safe_print.lock();   //lock while it gets whole package of lines/answers
+    while(1)
+    {
+        char answer[100];
+        socket_read_str(sock, answer, 100);  //get answer
 
-    socket_write_string(sock, query_send);
-
-    printf("Connecting to port %d\n", port);
-
+        if(strcmp(answer, "/Done") == 0)
+            break;
+        cout<<answer<<endl;
+    }
+    safe_print.unlock();
 }
 
 int main(int argc, char *argv[])
@@ -103,6 +102,6 @@ int main(int argc, char *argv[])
         threads[i]->join();
     }
 
-    sleep(10);
+    sleep(5);
     return 0;
 }

@@ -1,5 +1,7 @@
-#include "PatientRecord.h"
 #include <bits/stdc++.h>
+#include "PatientRecord.h"
+#include "sockets.h"
+
 
 PatientRecord::PatientRecord(string s, string file_country, string file_date)
 {
@@ -30,8 +32,10 @@ const string &PatientRecord::GetRecordId() const
     return recordID;
 }
 
-void PatientRecord::printPatientRecord()
+void PatientRecord::printPatientRecord(int sock)
 {
+    string message = this->patientFirstName + " " + this->patientLastName + " " + this->diseaseID + " " + this->country + " " + this->date;
+    socket_write_string(sock, message);
     cout<<this->patientFirstName<<" "<<this->patientLastName<<" "<<this->diseaseID<<" "<<this->country<<" "<<this->date<<" "<<endl;
 }
 

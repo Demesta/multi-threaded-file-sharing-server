@@ -19,6 +19,7 @@
 #include "Worker_list.h"
 #include "Hash.h"
 #include "List.h"
+#include "utils.h"
 
 int thread_id = 0;
 
@@ -352,56 +353,7 @@ int statistics_connection(int sock)
             }
         }
 
-
     }
-
-
-
-//    while ((date_size = socket_read_str(sock, date_str, 11)) > 0)
-//    {
-//        if ((country_size = socket_read_str(sock, country, 32)) < 0)
-//        {
-//            return -1;
-//        }
-//
-////            worker_add_country(worker, country, country_size);
-//
-//        char disease[32];
-//        int disease_size;
-//        while ((disease_size = socket_read_str(sock, disease, 32)) > 0)
-//        {
-//            cout << disease << endl;
-//            int age20, age40, age60, age60Plus;
-//            if (socket_read_int(sock, &age20) < 0)
-//            {
-//                cout << "failed to read" << endl;
-//                return -1;
-//            }
-//            if (socket_read_int(sock, &age40) < 0)
-//            {
-//                cout << "failed to read" << endl;
-//                return -1;
-//            }
-//            if (socket_read_int(sock, &age60) < 0)
-//            {
-//                cout << "failed to read" << endl;
-//                return -1;
-//            }
-//            if (socket_read_int(sock, &age60Plus) < 0)
-//            {
-//                cout << "failed to read" << endl;
-//                return -1;
-//            }
-//
-//            {
-//                lock_guard<mutex> cout_lock(cout_mutex);
-//                cout << "Age 0-20 : " << age20 << endl;
-//                cout << "Age 20-40 : " << age40 << endl;
-//                cout << "Age 40-60 : " << age60 << endl;
-//                cout << "Age 60+ : " << age60Plus << endl;
-//            }
-//        }
-//    }
 
     if (date_size < 0)
     {
@@ -416,7 +368,7 @@ mutex open_socket_mutex;
 
 int query_connection(int client_sock)
 {
-    char query[24];
+    char query[100];
     int query_size;
 
 //    if ((query_size = socket_read_str(socket, query, 128)) < 0)
@@ -425,15 +377,13 @@ int query_connection(int client_sock)
 //        return -1;
 //    }
 
-    query_size=socket_read_str(client_sock, query, 24);  //query for master
-    cout<<"i got from client: "<<query<< " of size "<<query_size<<endl;
-
+    query_size=socket_read_str(client_sock, query, 100);  //read query for master from client
     string message = "";
     for(int h=0; h < query_size; h++)
     {
         message = message + query[h];
     }
-    //cout<<"!!!! i send "<<message<<endl;
+    string type = getFirstWord(message);
 
     Worker_list_node *N = master_sockets;
     while(N != nullptr)    //send query to every worker
@@ -441,86 +391,31 @@ int query_connection(int client_sock)
         int s = N->port;
         N = N->nextNode;
 
+        socket_write_string(s, type);
         socket_write_string(s, message);
     }
 
     Worker_list_node *L = master_sockets;
-    while(L != nullptr)    //get answers
+    while(L != nullptr)    //get answers from workers
     {
         int s = L->port;
         L = L->nextNode;
 
-        int size;
-        char answer[32];
         while(1)
         {
-            socket_read_str(s, answer, 32);
+            char answer[100];
+            socket_read_str(s, answer, 100);   //get answer
+            socket_write_string(client_sock, answer); //send answer to client
 
             if(strcmp(answer, "/Done") == 0)
                 break;
             cout<<"-"<<answer<<endl;
-
         }
 //        while((size = socket_read_str(s, answer, 32)) > 0)
 //        {
 //            cout<<"-"<<answer<<endl;
 //        }
     }
-
-
-//    int port,master_sock,i=4;
-//    struct sockaddr_in server;
-//    Worker_list_node *N = master_workers;
-//    while(N != nullptr)   //connect with each port and send the query to every worker
-//    {
-//        port = N->port;
-//        N = N->nextNode;
-//
-// //       master_sock = open_socket(port);
-// //       socket_write_int(master_sock, &i);
-//
-////to panw 'h to katw
-//
-//
-//        struct sockaddr* serverptr = (struct sockaddr*)&server;
-//        struct hostent *rem;
-//
-//        master_sock = socket(PF_INET, SOCK_STREAM, 0);
-//
-//        rem = gethostbyname("localhost");
-//        server.sin_family = AF_INET;
-//        memcpy(&server.sin_addr, rem->h_addr, rem->h_length);
-//        server.sin_port = htons(port);
-//        connect(master_sock, serverptr, sizeof(server));
-//
-//        socket_write_int(master_sock, &i);
-//    }
-
-
-   // int type = query_type(query, query_size);
-
-//    if (type == 0)
-//    {
-//        // handle /diseaseFrequency
-//    } else if (type == 1)
-//    {
-//        // handle /topk-AgeRanges
-//        int k;
-//        char disease[32];
-//        char country[32];
-//        char dateFrom[16];
-//        char dateTo[16];
-//
-//        Worker *worker = find_worker(country);
-//        char result[1024];
-//        size_t result_size;
-//        if ((result_size = worker->topk_age_ranges(k, disease, dateFrom, dateTo, result, 1024)) < 0)
-//        {
-//            cout << "query failed on worker" << endl;
-//        }
-//
-//        socket_write_str(socket, result, result_size);
-//    }
 
     return 0;
 }
@@ -538,8 +433,6 @@ void task(int i)    //slave threads' work
         work_item item{};
         buffer_read(item);
 
-        cout << "thread " << i << " accepting connection from socket " << item.socket << endl;
-
         if (item.type == 0)   //something from master
         {
             statistics_connection(item.socket);
@@ -549,9 +442,7 @@ void task(int i)    //slave threads' work
         }
         else if (item.type == 1)   //query from client
         {
-            cout << "thread " << i << " accepting queries from socket " << item.socket << endl;
             query_connection(item.socket);
-
         }
 //
 //        close(item.socket);

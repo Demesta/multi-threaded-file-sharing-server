@@ -4,6 +4,7 @@
 #include "PatientRecord.h"
 #include "Records_list.h"
 #include "Dir_list.h"
+#include "sockets.h"
 
 string ReverseDateFormat(string s)
 {
@@ -91,7 +92,7 @@ void receive_message(int fifo, char* message, int buffsize)
 
 }
 
-void diseaseFrequency(string disease, string date1, string date2, string country, ListNode *&L)
+void diseaseFrequency(string disease, string date1, string date2, string country, ListNode *&L, int sock)
 {
     date1 = ReverseDateFormat(date1);
     date2 = ReverseDateFormat(date2);
@@ -121,11 +122,14 @@ void diseaseFrequency(string disease, string date1, string date2, string country
         P=P->nextNode;
     }
 
+    string message = country + " " + to_string(count);
+    socket_write_string(sock, message);
+
     cout<<country<<" "<<count<<endl;
 
 }
 
-void num_Patient_Status(string status, string disease, string date1, string date2, string country, ListNode *&L)
+void num_Patient_Status(string status, string disease, string date1, string date2, string country, ListNode *&L, int sock)
 {
     date1 = ReverseDateFormat(date1);
     date2 = ReverseDateFormat(date2);
@@ -160,11 +164,12 @@ void num_Patient_Status(string status, string disease, string date1, string date
         P=P->nextNode;
     }
 
+    string message = country + " " + to_string(count);
+    socket_write_string(sock, message);
     cout<<country<<" "<<count<<endl;
-
 }
 
-void age_ranges(int k, string country, string disease, string date1, string date2, ListNode *&L)
+void age_ranges(int k, string country, string disease, string date1, string date2, ListNode *&L, int sock)
 {
     date1 = ReverseDateFormat(date1);
     date2 = ReverseDateFormat(date2);
@@ -238,22 +243,34 @@ void age_ranges(int k, string country, string disease, string date1, string date
         if(sort_array[z] == a1)
         {
             float result = ( (float)  sort_array[z] / (float)  sum   );
-            cout<<"0-20: "<< result * 100<<"%"<<endl;
+            //cout<<"0-20: "<< result * 100<<"%"<<endl;
+            string messgae = "0-20: " + to_string(result*100) + "%";
+            socket_write_string(sock, messgae);
+            cout<<messgae<<endl;
         }
         else if(sort_array[z] == a2)
         {
             float result = ( (float)  sort_array[z] / (float)  sum   );
-            cout<<"21-40: "<< result * 100<<"%"<<endl;
+            //cout<<"21-40: "<< result * 100<<"%"<<endl;
+            string messgae = "21-40: " + to_string(result*100) + "%";
+            socket_write_string(sock, messgae);
+            cout<<messgae<<endl;
         }
         else if(sort_array[z] == a3)
         {
             float result = ( (float)  sort_array[z] / (float)  sum   );
-            cout<<"41-60: "<< result * 100<<"%"<<endl;
+            //cout<<"41-60: "<< result * 100<<"%"<<endl;
+            string messgae = "41-60: " + to_string(result*100) + "%";
+            socket_write_string(sock, messgae);
+            cout<<messgae<<endl;
         }
         else if(sort_array[z] == a4)
         {
             float result = ( (float)  sort_array[z] / (float)  sum   );
-            cout<<"60+: "<< result * 100 <<"%"<<endl;
+            //cout<<"60+: "<< result * 100 <<"%"<<endl;
+            string messgae = "60+: " + to_string(result*100) + "%";
+            socket_write_string(sock, messgae);
+            cout<<messgae<<endl;
         }
 
     }

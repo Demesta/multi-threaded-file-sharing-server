@@ -14,6 +14,7 @@
 #include <sys/wait.h>
 #include <dirent.h>
 #include <string.h>
+#include <mutex>
 #include <fstream>
 #include <bits/stdc++.h>
 #include <fcntl.h>
@@ -36,6 +37,7 @@ using namespace std;
 #define READ 0;
 #define WRITE  1;
 
+mutex write_to_socket;
 
 int main(int argc, char *argv[])
 {
@@ -181,208 +183,6 @@ int main(int argc, char *argv[])
 
                 }
             }
-//            else if (strcmp(get_command, "/listCountries") == 0)
-//            {
-//                DirListNode *N = country_list;
-//                while (N != nullptr)
-//                {
-//                    cout << N->item->getCountryName() << " " << getpid() << endl;
-//                    N = N->nextNode;
-//                }
-//
-//            }
-//            else if (strcmp(get_command, "/topk-AgeRanges") == 0)
-//            {
-//                receive_message(p_to_w,get_command,buffer_size);   //get the whole "/topk-AgeRanges k country disease date1 date2" string
-//
-//                string elements[6];
-//                string country, disease, date1, date2, token;
-//                int k;
-//                int d = 0;
-//
-//                for (int k = 0; k < strlen(get_command); k++)   //cut string to parts
-//                {
-//                    if (get_command[k] == ' ' || get_command[k] == '\n' || get_command[k] == '\0')
-//                    {
-//                        d++;
-//                    } else
-//                    {
-//                        elements[d] += get_command[k];
-//                    }
-//                }
-//
-//                k = stoi(elements[1]);  //elements[0] = "/topk-AgeRanges" so i skip it
-//                country = elements[2];
-//                disease = elements[3];
-//                date1 = elements[4];
-//                date2 = elements[5];
-//
-//                string my_country;
-//                DirListNode *K = country_list;
-//                while (K != nullptr)
-//                {
-//                    my_country = K->item->getCountryName();
-//
-//                    if (my_country == country) //found the country so this child has to work
-//                    {
-//                        age_ranges(k, country, disease, date1, date2, List);
-//                        break; //there is no reason to search further as we look for only one country
-//                    }
-//                    K = K->nextNode;
-//                }
-//
-//            }
-//            else if(strcmp(get_command, "/diseaseFrequency") == 0)
-//            {
-//                receive_message(p_to_w,get_command,buffer_size);
-//
-//                string elements[5];
-//                string country, disease, date1, date2, token;
-//                int k;
-//                int d = 0;
-//
-//                for (int k = 0; k < strlen(get_command); k++)   //cut string to parts
-//                {
-//                    if (get_command[k] == ' ' || get_command[k] == '\n' || get_command[k] == '\0')
-//                    {
-//                        d++;
-//                    } else
-//                    {
-//                        elements[d] += get_command[k];
-//                    }
-//                }
-//
-//                disease = elements[1];
-//                date1 = elements[2];
-//                date2 = elements[3];
-//
-//                if(elements[4] == "") //no country given
-//                {
-//                    string my_country;
-//                    DirListNode *K = country_list;
-//                    while (K != nullptr)  //for every country of every worker
-//                    {
-//                        my_country = K->item->getCountryName();
-//
-//                        diseaseFrequency(disease, date1, date2, my_country, List);
-//                        K = K->nextNode;
-//                    }
-//                }
-//                else
-//                {
-//                    country = elements[4];
-//
-//                    string my_country;
-//                    DirListNode *K = country_list;
-//                    while (K != nullptr)
-//                    {
-//                        my_country = K->item->getCountryName();
-//
-//                        if (my_country == country) //found the country so this child has to work
-//                        {
-//                            diseaseFrequency(disease, date1, date2, country, List);
-//                            break; //there is no reason to search further as we look for only one country
-//                        }
-//                        K = K->nextNode;
-//                    }
-//
-//                }
-//
-//            }
-//            else if(strcmp(get_command, "/numPatientAdmissions") == 0 || strcmp(get_command, "/numPatientDischarges") == 0)
-//            {
-//                string status;
-//
-//                if(strcmp(get_command, "/numPatientAdmissions") == 0)
-//                    status = "ENTRY";
-//                else if(strcmp(get_command, "/numPatientDischarges") == 0)
-//                    status = "EXIT";
-//
-//                receive_message(p_to_w,get_command,buffer_size);
-//
-//                string elements[5];
-//                string country, disease, date1, date2, token;
-//                int k;
-//                int d = 0;
-//
-//                for (int k = 0; k < strlen(get_command); k++)   //cut string to parts
-//                {
-//                    if (get_command[k] == ' ' || get_command[k] == '\n' || get_command[k] == '\0')
-//                    {
-//                        d++;
-//                    } else
-//                    {
-//                        elements[d] += get_command[k];
-//                    }
-//                }
-//
-//                disease = elements[1];
-//                date1 = elements[2];
-//                date2 = elements[3];
-//
-//                if(elements[4] == "") //no country given
-//                {
-//                    string my_country;
-//                    DirListNode *K = country_list;
-//                    while (K != nullptr)  //for every country of every worker
-//                    {
-//                        my_country = K->item->getCountryName();
-//                        num_Patient_Status(status, disease, date1, date2, my_country, List);
-//                        K = K->nextNode;
-//                    }
-//                }
-//                else
-//                {
-//                    country = elements[4];
-//
-//                    string my_country;
-//                    DirListNode *K = country_list;
-//                    while (K != nullptr)
-//                    {
-//                        my_country = K->item->getCountryName();
-//
-//                        if (my_country == country) //found the country so this child has to work
-//                        {
-//                            num_Patient_Status(status, disease, date1, date2, country, List);
-//                            break; //there is no reason to search further as we look for only one country
-//                        }
-//                        K = K->nextNode;
-//                    }
-//
-//                }
-//            }
-//            else if(strcmp(get_command, "/searchPatientRecord") == 0)
-//            {
-//                receive_message(p_to_w,get_command,buffer_size);
-//
-//                string elements[2];
-//                string country, disease, date1, date2, token;
-//                string record_id;
-//                int d = 0;
-//
-//                for (int k = 0; k < strlen(get_command); k++)   //cut string to parts
-//                {
-//                    if (get_command[k] == ' ' || get_command[k] == '\n' || get_command[k] == '\0')
-//                    {
-//                        d++;
-//                    } else
-//                    {
-//                        elements[d] += get_command[k];
-//                    }
-//                }
-//
-//                record_id = elements[1];
-//                ListNode *N = List;
-//                while(N != nullptr)
-//                {
-//                    if(N->item->GetRecordId() == record_id)
-//                    {
-//                        N->item->printPatientRecord();
-//                    }
-//                    N = N->nextNode;
-//                }
-//            }
-
             else if(strcmp(get_command, "/Server IP") == 0)
             {
                 receive_message(p_to_w,get_command,buffer_size);  //get ip
@@ -391,13 +191,11 @@ int main(int argc, char *argv[])
                 {
                     ip = ip + get_command[i];
                 }
-                cout<<"I am child "<<id<<" and i have ip: "<<ip<<endl;
             }
             else if(strcmp(get_command, "/Server Port") == 0)
             {
                 receive_message(p_to_w,get_command,buffer_size);  //get ip
                 port = atoi(get_command);
-                cout<<"I am child "<<id<<" and i have port: "<<port<<endl;
             }
             else if(strcmp(get_command, "/Done All") == 0)
             {
@@ -405,10 +203,8 @@ int main(int argc, char *argv[])
             }
         } //now the worker knows folders + port + ip
 
-        //bind with server
+        //===================CONNECT TO SERVER==============
         int my_port = 8000 + id;   //if id=2 then the worker listens at port 8002
-
-        /////////////////////////////////////connect to server:
         int sock;
         char buf[256];
         struct sockaddr_in server, me;
@@ -426,7 +222,6 @@ int main(int argc, char *argv[])
         server.sin_family = AF_INET;
         memcpy(&server.sin_addr, rem->h_addr, rem->h_length);
         server.sin_port = htons(port);
-
         me.sin_family = AF_INET;
         me.sin_addr.s_addr = INADDR_ANY;
         me.sin_port = htons(my_port);
@@ -436,18 +231,11 @@ int main(int argc, char *argv[])
         if (connect(sock, serverptr, sizeof(server)) < 0)
             cout<<"error: connect\n";
 
-//        write(sock, &id, 4);
-//        cout<<"Wrote "<<id<<endl;
-
-        printf("Connecting to port %d\n", port);
-
         socket_write_int(sock, my_port);  //send worker's port to server
+        //==================================================================
 
-        ////////////////////////////////////////////////////////////////
 
-
-        DirListNode *L = country_list; //next step is to open each folder
-
+        DirListNode *L = country_list; //Statistics
         while (L != nullptr)  //loops for every country/folder
         {
             struct dirent *de;
@@ -479,9 +267,7 @@ int main(int argc, char *argv[])
 
                     //find stats:
                     socket_write_string(sock, de->d_name); //de->d_name = date
-                    cout<<de->d_name<<endl;
                     socket_write_string(sock, name);  //name = country
-                    cout<<name<<endl;
                     temp_table.statistics(sock);
                 }
             }
@@ -491,32 +277,204 @@ int main(int argc, char *argv[])
         send_message("/Done", w_to_p,buffer_size);  //worker has send statistics and is ready to receive commands
 
 
-        while(1)
+        while(1)   //get commands from server
         {
-            char get_command[50];
+            char get_command[100];
             socket_read_str(sock, get_command, 50);
             cout<<"Command: "<<get_command<<endl;
 
-            if (strcmp(get_command, "/listCountries") == 0)
+            if (strcmp(get_command, "/topk-AgeRanges") == 0)
             {
-                DirListNode *N = country_list;
-                while (N != nullptr)
-                {
-                    string message= N->item->getCountryName() + " " + to_string(getpid());
-                    socket_write_string(sock, message);
+                socket_read_str(sock, get_command, 100);   //get the whole "/topk-AgeRanges k country disease date1 date2" string
 
-                    //cout << N->item->getCountryName() << " " << getpid() << endl;
+                string elements[6];
+                string country, disease, date1, date2, token;
+                int k;
+                int d = 0;
+
+                for (int k = 0; k < strlen(get_command); k++)   //cut string to parts
+                {
+                    if (get_command[k] == ' ' || get_command[k] == '\n' || get_command[k] == '\0')
+                    {
+                        d++;
+                    } else
+                    {
+                        elements[d] += get_command[k];
+                    }
+                }
+
+                k = stoi(elements[1]);  //elements[0] = "/topk-AgeRanges" so i skip it
+                country = elements[2];
+                disease = elements[3];
+                date1 = elements[4];
+                date2 = elements[5];
+
+                string my_country;
+                DirListNode *K = country_list;
+                while (K != nullptr)
+                {
+                    my_country = K->item->getCountryName();
+
+                    if (my_country == country) //found the country so this child has to work
+                    {
+                        age_ranges(k, country, disease, date1, date2, List, sock);
+                        break; //there is no reason to search further as we look for only one country
+                    }
+                    K = K->nextNode;
+                }
+                socket_write_string(sock, "/Done");
+            }
+            else if(strcmp(get_command, "/diseaseFrequency") == 0)
+            {
+                socket_read_str(sock, get_command, 100);
+
+                string elements[5];
+                string country, disease, date1, date2, token;
+                int k;
+                int d = 0;
+
+                for (int k = 0; k < strlen(get_command); k++)   //cut string to parts
+                {
+                    if (get_command[k] == ' ' || get_command[k] == '\n' || get_command[k] == '\0')
+                    {
+                        d++;
+                    } else
+                    {
+                        elements[d] += get_command[k];
+                    }
+                }
+
+                disease = elements[1];
+                date1 = elements[2];
+                date2 = elements[3];
+
+                if(elements[4] == "") //no country given
+                {
+                    string my_country;
+                    DirListNode *K = country_list;
+                    while (K != nullptr)  //for every country of every worker
+                    {
+                        my_country = K->item->getCountryName();
+
+                        diseaseFrequency(disease, date1, date2, my_country, List, sock);
+                        K = K->nextNode;
+                    }
+                }
+                else
+                {
+                    country = elements[4];
+
+                    string my_country;
+                    DirListNode *K = country_list;
+                    while (K != nullptr)
+                    {
+                        my_country = K->item->getCountryName();
+
+                        if (my_country == country) //found the country so this child has to work
+                        {
+                            diseaseFrequency(disease, date1, date2, country, List, sock);
+                            break; //there is no reason to search further as we look for only one country
+                        }
+                        K = K->nextNode;
+                    }
+
+                }
+                socket_write_string(sock, "/Done");
+            }
+            else if(strcmp(get_command, "/searchPatientRecord") == 0)
+            {
+                socket_read_str(sock, get_command, 100);
+
+                string elements[2];
+                string country, disease, date1, date2, token;
+                string record_id;
+                int d = 0;
+
+                for (int k = 0; k < strlen(get_command); k++)   //cut string to parts
+                {
+                    if (get_command[k] == ' ' || get_command[k] == '\n' || get_command[k] == '\0')
+                    {
+                        d++;
+                    } else
+                    {
+                        elements[d] += get_command[k];
+                    }
+                }
+
+                record_id = elements[1];
+                ListNode *N = List;
+                while(N != nullptr)
+                {
+                    if(N->item->GetRecordId() == record_id)
+                    {
+                        N->item->printPatientRecord(sock);
+                    }
                     N = N->nextNode;
                 }
-                //socket_write_size_t(sock, 0);
+                socket_write_string(sock, "/Done");
+            }
+            else if(strcmp(get_command, "/numPatientAdmissions") == 0 || strcmp(get_command, "/numPatientDischarges") == 0)
+            {
+                string status;
+
+                if(strcmp(get_command, "/numPatientAdmissions") == 0)
+                    status = "ENTRY";
+                else if(strcmp(get_command, "/numPatientDischarges") == 0)
+                    status = "EXIT";
+
+                socket_read_str(sock, get_command, 100);
+
+                string elements[5];
+                string country, disease, date1, date2, token;
+                int k;
+                int d = 0;
+                for (int k = 0; k < strlen(get_command); k++)   //cut string to parts
+                {
+                    if (get_command[k] == ' ' || get_command[k] == '\n' || get_command[k] == '\0')
+                    {
+                        d++;
+                    } else
+                    {
+                        elements[d] += get_command[k];
+                    }
+                }
+                disease = elements[1];
+                date1 = elements[2];
+                date2 = elements[3];
+
+                if(elements[4] == "") //no country given
+                {
+                    string my_country;
+                    DirListNode *K = country_list;
+                    while (K != nullptr)  //for every country of every worker
+                    {
+                        my_country = K->item->getCountryName();
+                        num_Patient_Status(status, disease, date1, date2, my_country, List, sock);
+                        K = K->nextNode;
+                    }
+                }
+                else
+                {
+                    country = elements[4];
+                    string my_country;
+                    DirListNode *K = country_list;
+                    while (K != nullptr)
+                    {
+                        my_country = K->item->getCountryName();
+
+                        if (my_country == country) //found the country so this child has to work
+                        {
+                            num_Patient_Status(status, disease, date1, date2, country, List, sock);
+                            break; //there is no reason to search further as we look for only one country
+                        }
+                        K = K->nextNode;
+                    }
+
+                }
                 socket_write_string(sock, "/Done");
             }
 
-
-
         }
-
-
     }
     //===================================PARENT=========================================
     else   //parent code

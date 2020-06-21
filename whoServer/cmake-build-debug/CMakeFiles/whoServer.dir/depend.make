@@ -10,4 +10,8 @@ CMakeFiles/whoServer.dir/main.cpp.o: ../Hash.h
 CMakeFiles/whoServer.dir/main.cpp.o: ../List.h
 CMakeFiles/whoServer.dir/main.cpp.o: ../Worker_list.h
 CMakeFiles/whoServer.dir/main.cpp.o: ../main.cpp
+CMakeFiles/whoServer.dir/main.cpp.o: ../utils.h
+
+CMakeFiles/whoServer.dir/utils.cpp.o: ../utils.cpp
+CMakeFiles/whoServer.dir/utils.cpp.o: ../utils.h
 

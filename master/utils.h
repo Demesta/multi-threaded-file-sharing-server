@@ -18,9 +18,9 @@ string getLastWord(string);
 string removeFirstWord(string);
 void send_message(string, int, int);
 void receive_message(int, char*, int);
-void age_ranges(int, string, string, string, string, ListNode *&L);
-void diseaseFrequency(string, string, string, string, ListNode *&L);
-void num_Patient_Status(string, string, string, string, string, ListNode *&L);
+void age_ranges(int, string, string, string, string, ListNode *&L, int);
+void diseaseFrequency(string, string, string, string, ListNode *&L, int);
+void num_Patient_Status(string, string, string, string, string, ListNode *&L, int);
 
 
 #endif //SYSPRO2_UTILS_H

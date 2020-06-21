@@ -20,7 +20,7 @@ private:
 
 public:
     PatientRecord(string, string, string);
-    void printPatientRecord();
+    void printPatientRecord(int);
 
     const string &getDiseaseId() const;
     const string &getStatus() const;

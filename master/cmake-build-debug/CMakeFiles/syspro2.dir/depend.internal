@@ -29,6 +29,7 @@ CMakeFiles/syspro2.dir/HashTable.cpp.o
 CMakeFiles/syspro2.dir/PatientRecord.cpp.o
  /home/demesta/Documents/syspro3/master/PatientRecord.cpp
  /home/demesta/Documents/syspro3/master/PatientRecord.h
+ /home/demesta/Documents/syspro3/master/sockets.h
 CMakeFiles/syspro2.dir/Records_list.cpp.o
  /home/demesta/Documents/syspro3/master/PatientRecord.h
  /home/demesta/Documents/syspro3/master/Records_list.cpp
@@ -80,5 +81,6 @@ CMakeFiles/syspro2.dir/utils.cpp.o
  /home/demesta/Documents/syspro3/master/Dir_list.h
  /home/demesta/Documents/syspro3/master/PatientRecord.h
  /home/demesta/Documents/syspro3/master/Records_list.h
+ /home/demesta/Documents/syspro3/master/sockets.h
  /home/demesta/Documents/syspro3/master/utils.cpp
  /home/demesta/Documents/syspro3/master/utils.h
