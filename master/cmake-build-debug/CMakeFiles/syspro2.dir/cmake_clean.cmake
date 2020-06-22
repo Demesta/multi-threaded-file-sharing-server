@@ -8,6 +8,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/syspro2.dir/Records_list.cpp.o"
   "CMakeFiles/syspro2.dir/countryHashTable.cpp.o"
   "CMakeFiles/syspro2.dir/diseaseHashTable.cpp.o"
+  "CMakeFiles/syspro2.dir/logging.cpp.o"
   "CMakeFiles/syspro2.dir/main.cpp.o"
   "CMakeFiles/syspro2.dir/signal_handler.cpp.o"
   "CMakeFiles/syspro2.dir/sockets.cpp.o"

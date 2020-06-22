@@ -68,7 +68,7 @@ void diseaseHashTable::statistics(int socket)
         }
     }
 
-    socket_write_string(socket, "/Done");
+    socket_write_str(socket, (char*)"/Done", 5);
 }
 
 bool diseaseHashTable::treeExists(AVLTree *tree, PatientRecord *record)

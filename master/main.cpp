@@ -30,6 +30,7 @@
 #include "PatientRecord.h"
 #include "signal_handler.h"
 #include "sockets.h"
+#include "logging.h"
 
 using namespace std;
 
@@ -233,9 +234,9 @@ int main(int argc, char *argv[])
 
         //==================================================================
 
-
+        //loops for every country/folder
         DirListNode *L = country_list; //Statistics
-        while (L != nullptr)  //loops for every country/folder
+        while (L != nullptr)
         {
             write_to_socket.lock();
 
@@ -267,7 +268,7 @@ int main(int argc, char *argv[])
                     temp_table.initializeHashTable(temp,100);  //this hash table is exclusively for current date file and helps for stats
 
                     //find stats:
-                    socket_write_string(sock, de->d_name); //de->d_name = date
+                    socket_write_str(sock, de->d_name, strlen(de->d_name)); //de->d_name = date
                     socket_write_string(sock, name);  //name = country
                     temp_table.statistics(sock);
                 }
@@ -276,10 +277,11 @@ int main(int argc, char *argv[])
 
             write_to_socket.unlock();
 
-        }   //after this while, worker has a full list of patient records
+        }
+        //after this while, worker has a full list of patient records
 
         write_to_socket.lock();
-        socket_write_string(sock, "/Done");
+        socket_write_str(sock, (char*)"/Done", 5);
         write_to_socket.unlock();
 
         while(1)   //get commands from server
@@ -289,6 +291,8 @@ int main(int argc, char *argv[])
             char get_command[100];
             socket_read_str(sock, get_command, 50);
             cout<<"Command: "<<get_command<<endl;
+
+            LOG("received command '%s' from client", get_command);
 
             if (strcmp(get_command, "/topk-AgeRanges") == 0)
             {
@@ -329,7 +333,8 @@ int main(int argc, char *argv[])
                     }
                     K = K->nextNode;
                 }
-                socket_write_string(sock, "/Done");
+
+                socket_write_str(sock, (char*)"/Done", 5);
             }
             else if(strcmp(get_command, "/diseaseFrequency") == 0)
             {
@@ -386,7 +391,7 @@ int main(int argc, char *argv[])
                     }
 
                 }
-                socket_write_string(sock, "/Done");
+                socket_write_str(sock, (char*)"/Done", 5);
             }
             else if(strcmp(get_command, "/searchPatientRecord") == 0)
             {
@@ -418,7 +423,7 @@ int main(int argc, char *argv[])
                     }
                     N = N->nextNode;
                 }
-                socket_write_string(sock, "/Done");
+                socket_write_str(sock, (char*)"/Done", 5);
             }
             else if(strcmp(get_command, "/numPatientAdmissions") == 0 || strcmp(get_command, "/numPatientDischarges") == 0)
             {
@@ -478,7 +483,7 @@ int main(int argc, char *argv[])
                     }
 
                 }
-                socket_write_string(sock, "/Done");
+                socket_write_str(sock, (char*)"/Done", 5);
             }
 
             write_to_socket.unlock();
@@ -487,6 +492,14 @@ int main(int argc, char *argv[])
     //===================================PARENT=========================================
     else   //parent code
     {
+        // welcome to the 400-line hell,
+        // you  shall not escape from the doom that
+        // will become you if you try to understand this
+        //
+        // the following code is a fine example of
+        // abject oriented programming, only true
+        // programming paradigm practised through
+        // generations of programmers.
         DirListNode *countries;
         string countrs[files_num];
         int fifos[n];  //keeps the fifos of each parent_to_worker
@@ -497,7 +510,7 @@ int main(int argc, char *argv[])
         string server_ip = args.server_ip;
         printf("I am the parent process with ID: %lu\n", (long) getpid());
 
-        //code to divide the files for each worker:
+        // divide the files to each worker:
         for (i = 1; i <= n; i++)
         {
             char read_dir[buffer_size];
@@ -719,7 +732,6 @@ int main(int argc, char *argv[])
 
                 send_message(done_dir, fifos[i - 1], buffer_size);   //tell each worker that it has all the info
             }
-
 
         }  //gave the workers the needed info
 

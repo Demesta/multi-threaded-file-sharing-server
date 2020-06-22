@@ -142,6 +142,12 @@
 		<Unit filename="/home/demesta/Documents/syspro3/master/diseaseHashTable.h">
 			<Option target="syspro2"/>
 		</Unit>
+		<Unit filename="/home/demesta/Documents/syspro3/master/logging.cpp">
+			<Option target="syspro2"/>
+		</Unit>
+		<Unit filename="/home/demesta/Documents/syspro3/master/logging.h">
+			<Option target="syspro2"/>
+		</Unit>
 		<Unit filename="/home/demesta/Documents/syspro3/master/main.cpp">
 			<Option target="syspro2"/>
 		</Unit>

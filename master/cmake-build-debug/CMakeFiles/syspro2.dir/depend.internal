@@ -56,6 +56,9 @@ CMakeFiles/syspro2.dir/diseaseHashTable.cpp.o
  /home/demesta/Documents/syspro3/master/diseaseHashTable.h
  /home/demesta/Documents/syspro3/master/sockets.h
  /home/demesta/Documents/syspro3/master/utils.h
+CMakeFiles/syspro2.dir/logging.cpp.o
+ /home/demesta/Documents/syspro3/master/logging.cpp
+ /home/demesta/Documents/syspro3/master/logging.h
 CMakeFiles/syspro2.dir/main.cpp.o
  /home/demesta/Documents/syspro3/master/AVLTree.h
  /home/demesta/Documents/syspro3/master/Arguments.h
@@ -67,6 +70,7 @@ CMakeFiles/syspro2.dir/main.cpp.o
  /home/demesta/Documents/syspro3/master/Records_list.h
  /home/demesta/Documents/syspro3/master/countryHashTable.h
  /home/demesta/Documents/syspro3/master/diseaseHashTable.h
+ /home/demesta/Documents/syspro3/master/logging.h
  /home/demesta/Documents/syspro3/master/main.cpp
  /home/demesta/Documents/syspro3/master/signal_handler.h
  /home/demesta/Documents/syspro3/master/sockets.h
@@ -75,6 +79,7 @@ CMakeFiles/syspro2.dir/signal_handler.cpp.o
  /home/demesta/Documents/syspro3/master/signal_handler.cpp
  /home/demesta/Documents/syspro3/master/signal_handler.h
 CMakeFiles/syspro2.dir/sockets.cpp.o
+ /home/demesta/Documents/syspro3/master/logging.h
  /home/demesta/Documents/syspro3/master/sockets.cpp
  /home/demesta/Documents/syspro3/master/sockets.h
 CMakeFiles/syspro2.dir/utils.cpp.o

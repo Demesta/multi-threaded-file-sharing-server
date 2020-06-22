@@ -123,6 +123,33 @@ whoClient/fast:
 	$(MAKE) -f CMakeFiles/whoClient.dir/build.make CMakeFiles/whoClient.dir/build
 .PHONY : whoClient/fast
 
+logging.o: logging.cpp.o
+
+.PHONY : logging.o
+
+# target to build an object file
+logging.cpp.o:
+	$(MAKE) -f CMakeFiles/whoClient.dir/build.make CMakeFiles/whoClient.dir/logging.cpp.o
+.PHONY : logging.cpp.o
+
+logging.i: logging.cpp.i
+
+.PHONY : logging.i
+
+# target to preprocess a source file
+logging.cpp.i:
+	$(MAKE) -f CMakeFiles/whoClient.dir/build.make CMakeFiles/whoClient.dir/logging.cpp.i
+.PHONY : logging.cpp.i
+
+logging.s: logging.cpp.s
+
+.PHONY : logging.s
+
+# target to generate assembly for a file
+logging.cpp.s:
+	$(MAKE) -f CMakeFiles/whoClient.dir/build.make CMakeFiles/whoClient.dir/logging.cpp.s
+.PHONY : logging.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -186,6 +213,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... whoClient"
+	@echo "... logging.o"
+	@echo "... logging.i"
+	@echo "... logging.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

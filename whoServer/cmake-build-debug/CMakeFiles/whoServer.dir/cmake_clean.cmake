@@ -1,7 +1,9 @@
 file(REMOVE_RECURSE
   "CMakeFiles/whoServer.dir/Hash.cpp.o"
   "CMakeFiles/whoServer.dir/List.cpp.o"
+  "CMakeFiles/whoServer.dir/logging.cpp.o"
   "CMakeFiles/whoServer.dir/main.cpp.o"
+  "CMakeFiles/whoServer.dir/sockets.cpp.o"
   "CMakeFiles/whoServer.dir/utils.cpp.o"
   "whoServer"
   "whoServer.pdb"

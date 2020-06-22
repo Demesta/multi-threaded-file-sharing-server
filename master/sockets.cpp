@@ -1,6 +1,7 @@
 #include "sockets.h"
 
 #include <unistd.h>
+#include "logging.h"
 
 int __socket_safe_read(int socket, void *buffer, size_t buffer_size)
 {
@@ -45,24 +46,29 @@ int socket_read_int(int socket, int *value)
 
 int socket_read_str(int socket, char *buffer, size_t buffer_size)
 {
+    int error_code;
     size_t str_size;
-    if (__socket_safe_read(socket, &str_size, sizeof(size_t)) < 0)
+    if  ((error_code = __socket_safe_read(socket, &str_size, sizeof(size_t))) < 0)
     {
+        LOG("read error: read returned error code %d", error_code);
         return -1;
     }
 
     if ((str_size + 1) > buffer_size)
     {
+        LOG("read error: buffer_size is %lu and string size is %lu", buffer_size, str_size + 1);
         return -1;
     }
 
-    if(__socket_safe_read(socket, buffer, str_size) < 0) {
+    if ((error_code = __socket_safe_read(socket, buffer, str_size)) < 0)
+    {
+        LOG("read error: read returned error code %d", error_code);
         return -1;
     }
 
     buffer[str_size] = '\0';
 
-    return str_size + 1;
+    return (int)(str_size + 1);
 }
 
 int socket_write_int(int socket, int value)
@@ -77,6 +83,7 @@ int socket_write_size_t(int socket, size_t value)
 
 int socket_write_str(int socket, char *buffer, size_t buffer_size)
 {
+    LOG("writing '%s' to socket %d", buffer, socket);
     if (__socket_safe_write(socket, &buffer_size, sizeof(size_t)) < 0)
     {
         return -1;
@@ -85,7 +92,7 @@ int socket_write_str(int socket, char *buffer, size_t buffer_size)
     return __socket_safe_write(socket, buffer, buffer_size);
 }
 
-int socket_write_string(int socket, std::string str)
+int socket_write_string(int socket, std::string &str)
 {
     char *str_ptr = const_cast<char *>(str.c_str());
     size_t str_size = str.length();

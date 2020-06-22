@@ -85,6 +85,12 @@
 		<Unit filename="/home/demesta/Documents/syspro3/whoClient/Arguments.h">
 			<Option target="whoClient"/>
 		</Unit>
+		<Unit filename="/home/demesta/Documents/syspro3/whoClient/logging.cpp">
+			<Option target="whoClient"/>
+		</Unit>
+		<Unit filename="/home/demesta/Documents/syspro3/whoClient/logging.h">
+			<Option target="whoClient"/>
+		</Unit>
 		<Unit filename="/home/demesta/Documents/syspro3/whoClient/main.cpp">
 			<Option target="whoClient"/>
 		</Unit>

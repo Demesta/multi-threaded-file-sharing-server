@@ -366,6 +366,33 @@ diseaseHashTable.cpp.s:
 	$(MAKE) -f CMakeFiles/syspro2.dir/build.make CMakeFiles/syspro2.dir/diseaseHashTable.cpp.s
 .PHONY : diseaseHashTable.cpp.s
 
+logging.o: logging.cpp.o
+
+.PHONY : logging.o
+
+# target to build an object file
+logging.cpp.o:
+	$(MAKE) -f CMakeFiles/syspro2.dir/build.make CMakeFiles/syspro2.dir/logging.cpp.o
+.PHONY : logging.cpp.o
+
+logging.i: logging.cpp.i
+
+.PHONY : logging.i
+
+# target to preprocess a source file
+logging.cpp.i:
+	$(MAKE) -f CMakeFiles/syspro2.dir/build.make CMakeFiles/syspro2.dir/logging.cpp.i
+.PHONY : logging.cpp.i
+
+logging.s: logging.cpp.s
+
+.PHONY : logging.s
+
+# target to generate assembly for a file
+logging.cpp.s:
+	$(MAKE) -f CMakeFiles/syspro2.dir/build.make CMakeFiles/syspro2.dir/logging.cpp.s
+.PHONY : logging.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -510,6 +537,9 @@ help:
 	@echo "... diseaseHashTable.o"
 	@echo "... diseaseHashTable.i"
 	@echo "... diseaseHashTable.s"
+	@echo "... logging.o"
+	@echo "... logging.i"
+	@echo "... logging.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

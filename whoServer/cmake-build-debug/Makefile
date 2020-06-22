@@ -177,6 +177,33 @@ List.cpp.s:
 	$(MAKE) -f CMakeFiles/whoServer.dir/build.make CMakeFiles/whoServer.dir/List.cpp.s
 .PHONY : List.cpp.s
 
+logging.o: logging.cpp.o
+
+.PHONY : logging.o
+
+# target to build an object file
+logging.cpp.o:
+	$(MAKE) -f CMakeFiles/whoServer.dir/build.make CMakeFiles/whoServer.dir/logging.cpp.o
+.PHONY : logging.cpp.o
+
+logging.i: logging.cpp.i
+
+.PHONY : logging.i
+
+# target to preprocess a source file
+logging.cpp.i:
+	$(MAKE) -f CMakeFiles/whoServer.dir/build.make CMakeFiles/whoServer.dir/logging.cpp.i
+.PHONY : logging.cpp.i
+
+logging.s: logging.cpp.s
+
+.PHONY : logging.s
+
+# target to generate assembly for a file
+logging.cpp.s:
+	$(MAKE) -f CMakeFiles/whoServer.dir/build.make CMakeFiles/whoServer.dir/logging.cpp.s
+.PHONY : logging.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -203,6 +230,33 @@ main.s: main.cpp.s
 main.cpp.s:
 	$(MAKE) -f CMakeFiles/whoServer.dir/build.make CMakeFiles/whoServer.dir/main.cpp.s
 .PHONY : main.cpp.s
+
+sockets.o: sockets.cpp.o
+
+.PHONY : sockets.o
+
+# target to build an object file
+sockets.cpp.o:
+	$(MAKE) -f CMakeFiles/whoServer.dir/build.make CMakeFiles/whoServer.dir/sockets.cpp.o
+.PHONY : sockets.cpp.o
+
+sockets.i: sockets.cpp.i
+
+.PHONY : sockets.i
+
+# target to preprocess a source file
+sockets.cpp.i:
+	$(MAKE) -f CMakeFiles/whoServer.dir/build.make CMakeFiles/whoServer.dir/sockets.cpp.i
+.PHONY : sockets.cpp.i
+
+sockets.s: sockets.cpp.s
+
+.PHONY : sockets.s
+
+# target to generate assembly for a file
+sockets.cpp.s:
+	$(MAKE) -f CMakeFiles/whoServer.dir/build.make CMakeFiles/whoServer.dir/sockets.cpp.s
+.PHONY : sockets.cpp.s
 
 utils.o: utils.cpp.o
 
@@ -246,9 +300,15 @@ help:
 	@echo "... List.o"
 	@echo "... List.i"
 	@echo "... List.s"
+	@echo "... logging.o"
+	@echo "... logging.i"
+	@echo "... logging.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... sockets.o"
+	@echo "... sockets.i"
+	@echo "... sockets.s"
 	@echo "... utils.o"
 	@echo "... utils.i"
 	@echo "... utils.s"

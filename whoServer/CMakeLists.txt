@@ -4,6 +4,19 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(whoServer main.cpp Arguments.h List.cpp List.h Hash.cpp Hash.h Worker_list.h utils.cpp utils.h)
+add_executable(whoServer
+        main.cpp
+        Arguments.h
+        List.cpp
+        List.h
+        Hash.cpp
+        Hash.h
+        Worker_list.h
+        utils.cpp utils.h
+        logging.cpp
+        logging.h
+        sockets.cpp
+        sockets.h
+        )
 
 target_link_libraries(whoServer Threads::Threads)

@@ -100,7 +100,19 @@
 		<Unit filename="/home/demesta/Documents/syspro3/whoServer/Worker_list.h">
 			<Option target="whoServer"/>
 		</Unit>
+		<Unit filename="/home/demesta/Documents/syspro3/whoServer/logging.cpp">
+			<Option target="whoServer"/>
+		</Unit>
+		<Unit filename="/home/demesta/Documents/syspro3/whoServer/logging.h">
+			<Option target="whoServer"/>
+		</Unit>
 		<Unit filename="/home/demesta/Documents/syspro3/whoServer/main.cpp">
+			<Option target="whoServer"/>
+		</Unit>
+		<Unit filename="/home/demesta/Documents/syspro3/whoServer/sockets.cpp">
+			<Option target="whoServer"/>
+		</Unit>
+		<Unit filename="/home/demesta/Documents/syspro3/whoServer/sockets.h">
 			<Option target="whoServer"/>
 		</Unit>
 		<Unit filename="/home/demesta/Documents/syspro3/whoServer/utils.cpp">

@@ -1,0 +1,32 @@
+/topk-AgeRanges 2 China H1N1 01-01-2000 01-01-2020
+/topk-AgeRanges 1 USA H1N1 01-01-2000 01-01-2020
+/diseaseFrequency FLU 01-01-2000 01-01-2020
+/searchPatientRecord 23
+/searchPatientRecord 500
+/topk-AgeRanges 1 Japan H1N1 01-01-2000 01-01-2020
+/searchPatientRecord 222
+/diseaseFrequency H1N1 01-01-2000 01-01-2020
+/topk-AgeRanges 2 China H1N1 01-01-2000 01-01-2020
+/topk-AgeRanges 1 USA H1N1 01-01-2000 01-01-2020
+/diseaseFrequency FLU 01-01-2000 01-01-2020
+/searchPatientRecord 23
+/searchPatientRecord 500
+/topk-AgeRanges 1 Japan H1N1 01-01-2000 01-01-2020
+/searchPatientRecord 222
+/diseaseFrequency H1N1 01-01-2000 01-01-2020
+/topk-AgeRanges 2 China H1N1 01-01-2000 01-01-2020
+/topk-AgeRanges 1 USA H1N1 01-01-2000 01-01-2020
+/diseaseFrequency FLU 01-01-2000 01-01-2020
+/searchPatientRecord 23
+/searchPatientRecord 500
+/topk-AgeRanges 1 Japan H1N1 01-01-2000 01-01-2020
+/searchPatientRecord 222
+/diseaseFrequency H1N1 01-01-2000 01-01-2020
+/topk-AgeRanges 2 China H1N1 01-01-2000 01-01-2020
+/topk-AgeRanges 1 USA H1N1 01-01-2000 01-01-2020
+/diseaseFrequency FLU 01-01-2000 01-01-2020
+/searchPatientRecord 23
+/searchPatientRecord 500
+/topk-AgeRanges 1 Japan H1N1 01-01-2000 01-01-2020
+/searchPatientRecord 222
+/diseaseFrequency H1N1 01-01-2000 01-01-2020

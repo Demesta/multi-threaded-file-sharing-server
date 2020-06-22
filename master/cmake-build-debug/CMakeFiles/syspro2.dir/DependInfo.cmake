@@ -13,6 +13,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/demesta/Documents/syspro3/master/Records_list.cpp" "/home/demesta/Documents/syspro3/master/cmake-build-debug/CMakeFiles/syspro2.dir/Records_list.cpp.o"
   "/home/demesta/Documents/syspro3/master/countryHashTable.cpp" "/home/demesta/Documents/syspro3/master/cmake-build-debug/CMakeFiles/syspro2.dir/countryHashTable.cpp.o"
   "/home/demesta/Documents/syspro3/master/diseaseHashTable.cpp" "/home/demesta/Documents/syspro3/master/cmake-build-debug/CMakeFiles/syspro2.dir/diseaseHashTable.cpp.o"
+  "/home/demesta/Documents/syspro3/master/logging.cpp" "/home/demesta/Documents/syspro3/master/cmake-build-debug/CMakeFiles/syspro2.dir/logging.cpp.o"
   "/home/demesta/Documents/syspro3/master/main.cpp" "/home/demesta/Documents/syspro3/master/cmake-build-debug/CMakeFiles/syspro2.dir/main.cpp.o"
   "/home/demesta/Documents/syspro3/master/signal_handler.cpp" "/home/demesta/Documents/syspro3/master/cmake-build-debug/CMakeFiles/syspro2.dir/signal_handler.cpp.o"
   "/home/demesta/Documents/syspro3/master/sockets.cpp" "/home/demesta/Documents/syspro3/master/cmake-build-debug/CMakeFiles/syspro2.dir/sockets.cpp.o"

@@ -12,6 +12,12 @@ stdlib.h
 string
 -
 
+/home/demesta/Documents/syspro3/whoClient/logging.h
+cstdio
+-
+mutex
+-
+
 /home/demesta/Documents/syspro3/whoClient/main.cpp
 stdio.h
 -
@@ -49,6 +55,8 @@ Arguments.h
 /home/demesta/Documents/syspro3/whoClient/Arguments.h
 sockets.h
 /home/demesta/Documents/syspro3/whoClient/sockets.h
+logging.h
+/home/demesta/Documents/syspro3/whoClient/logging.h
 
 /home/demesta/Documents/syspro3/whoClient/sockets.h
 cstddef

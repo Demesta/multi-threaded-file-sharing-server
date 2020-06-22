@@ -1,1 +1,1 @@
-/usr/bin/c++  -g   CMakeFiles/whoClient.dir/main.cpp.o CMakeFiles/whoClient.dir/sockets.cpp.o  -o whoClient  -pthread 
+/usr/bin/c++  -g   CMakeFiles/whoClient.dir/main.cpp.o CMakeFiles/whoClient.dir/sockets.cpp.o CMakeFiles/whoClient.dir/logging.cpp.o  -o whoClient  -pthread 

@@ -5,12 +5,21 @@ CMakeFiles/whoServer.dir/Hash.cpp.o: ../Hash.cpp
 
 CMakeFiles/whoServer.dir/List.cpp.o: ../List.cpp
 
+CMakeFiles/whoServer.dir/logging.cpp.o: ../logging.cpp
+CMakeFiles/whoServer.dir/logging.cpp.o: ../logging.h
+
 CMakeFiles/whoServer.dir/main.cpp.o: ../Arguments.h
 CMakeFiles/whoServer.dir/main.cpp.o: ../Hash.h
 CMakeFiles/whoServer.dir/main.cpp.o: ../List.h
 CMakeFiles/whoServer.dir/main.cpp.o: ../Worker_list.h
+CMakeFiles/whoServer.dir/main.cpp.o: ../logging.h
 CMakeFiles/whoServer.dir/main.cpp.o: ../main.cpp
+CMakeFiles/whoServer.dir/main.cpp.o: ../sockets.h
 CMakeFiles/whoServer.dir/main.cpp.o: ../utils.h
+
+CMakeFiles/whoServer.dir/sockets.cpp.o: ../logging.h
+CMakeFiles/whoServer.dir/sockets.cpp.o: ../sockets.cpp
+CMakeFiles/whoServer.dir/sockets.cpp.o: ../sockets.h
 
 CMakeFiles/whoServer.dir/utils.cpp.o: ../utils.cpp
 CMakeFiles/whoServer.dir/utils.cpp.o: ../utils.h
