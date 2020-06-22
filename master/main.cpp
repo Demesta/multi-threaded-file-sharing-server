@@ -231,13 +231,14 @@ int main(int argc, char *argv[])
         if (connect(sock, serverptr, sizeof(server)) < 0)
             cout<<"error: connect\n";
 
-        socket_write_int(sock, my_port);  //send worker's port to server
         //==================================================================
 
 
         DirListNode *L = country_list; //Statistics
         while (L != nullptr)  //loops for every country/folder
         {
+            write_to_socket.lock();
+
             struct dirent *de;
             string name = L->item->getCountryName();  //folder name
             int nl = name.length();
@@ -272,13 +273,19 @@ int main(int argc, char *argv[])
                 }
             }
             L = L->nextNode;
-        }   //after this while, worker has a full list of patient records
-        socket_write_string(sock, "/Done");
-        send_message("/Done", w_to_p,buffer_size);  //worker has send statistics and is ready to receive commands
 
+            write_to_socket.unlock();
+
+        }   //after this while, worker has a full list of patient records
+
+        write_to_socket.lock();
+        socket_write_string(sock, "/Done");
+        write_to_socket.unlock();
 
         while(1)   //get commands from server
         {
+            write_to_socket.lock();
+
             char get_command[100];
             socket_read_str(sock, get_command, 50);
             cout<<"Command: "<<get_command<<endl;
@@ -474,6 +481,7 @@ int main(int argc, char *argv[])
                 socket_write_string(sock, "/Done");
             }
 
+            write_to_socket.unlock();
         }
     }
     //===================================PARENT=========================================
@@ -756,7 +764,7 @@ int main(int argc, char *argv[])
         while (true)
         {
             string choice = "";
-            cout << "What would you like to do?:\n";
+            cout << "Ready to get queries\n";
 
             char input[100];  //get input from user
             cin.getline(input,sizeof(input));   //i dont use the classic cin because it will stop reading at the first space

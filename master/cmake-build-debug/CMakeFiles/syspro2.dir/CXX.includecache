@@ -40,37 +40,9 @@ string
 string
 -
 
-/home/demesta/Documents/syspro3/master/TreeNode.h
-string
--
-
 /home/demesta/Documents/syspro3/master/countryHashTable.h
 HashTable.h
 /home/demesta/Documents/syspro3/master/HashTable.h
-
-/home/demesta/Documents/syspro3/master/diseaseHashTable.cpp
-iostream
--
-unistd.h
--
-string.h
--
-diseaseHashTable.h
-/home/demesta/Documents/syspro3/master/diseaseHashTable.h
-utils.h
-/home/demesta/Documents/syspro3/master/utils.h
-TreeNode.h
-/home/demesta/Documents/syspro3/master/TreeNode.h
-AVLTree.h
-/home/demesta/Documents/syspro3/master/AVLTree.h
-Bucket.h
-/home/demesta/Documents/syspro3/master/Bucket.h
-PatientRecord.h
-/home/demesta/Documents/syspro3/master/PatientRecord.h
-Records_list.h
-/home/demesta/Documents/syspro3/master/Records_list.h
-sockets.h
-/home/demesta/Documents/syspro3/master/sockets.h
 
 /home/demesta/Documents/syspro3/master/diseaseHashTable.h
 HashTable.h

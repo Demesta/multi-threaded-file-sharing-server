@@ -22,10 +22,18 @@ using namespace std;
 
 mutex safe_print;
 
+mutex ready_mutex;
+int ready=0;
+
+mutex done_mutex;
+int done=0;
+
+int curr_threads_global;
+
 void task(string query, int port, string ip, int id)
 {
     safe_print.lock();
-    cout<<"i am thread "<<id<< " and i have the message: "<<query<<endl;
+    //cout<<"i am thread "<<id<< " and i have the message: "<<query<<endl;
     safe_print.unlock();
 
     int sock;
@@ -53,9 +61,17 @@ void task(string query, int port, string ip, int id)
     char query_send[length+1];
     strcpy(query_send, query.c_str());
 
+    ready_mutex.lock();
+    ready++;
+    ready_mutex.unlock();
+
+    while(ready != curr_threads_global){}   //wait for every thread to be ready
+
     socket_write_string(sock, query_send);  //send query
 
     safe_print.lock();   //lock while it gets whole package of lines/answers
+    cout<<query<<endl;
+
     while(1)
     {
         char answer[100];
@@ -66,6 +82,10 @@ void task(string query, int port, string ip, int id)
         cout<<answer<<endl;
     }
     safe_print.unlock();
+
+    done_mutex.lock();
+    done++;
+    done_mutex.unlock();
 }
 
 int main(int argc, char *argv[])
@@ -86,6 +106,9 @@ int main(int argc, char *argv[])
     ifstream file(qfile);
     string query;
     int curr_threads=1;
+    int queries=0;
+    int done_queries=0;
+
 
     while(getline(file, query))// read each line
     {
@@ -93,15 +116,61 @@ int main(int argc, char *argv[])
         {
             threads[curr_threads] = new thread(task, query, server_port, server_ip, curr_threads);
             curr_threads++;
+            done_queries++;
         }
+        queries++;  //how many lines the file has
+    }
+    curr_threads_global = curr_threads-1;
 
+    int times=1;
+
+    while(1)
+    {
+        if(queries > done_queries)  //if lines are more than the threads we need to create more threads for the rest of the lines
+        {
+            int lines_done=0;
+
+            while(done != n){}  //wait until all threads are done
+
+            done=0;
+            ready=0;
+            curr_threads=1;
+            curr_threads_global=0;
+
+            for (int i = 1; i < curr_threads; i++)   //join
+            {
+                threads[i]->join();
+            }
+
+            file.clear();
+            file.seekg(0,ios::beg); //start reading file from beginning
+
+            while(getline(file, query))
+            {
+                lines_done++;
+                if(lines_done > (n*times))  //start creating threads after passed n * times lines (if this is done 2 times then there are 2 * num_threads made)
+                {
+                    if(curr_threads <= n) //no more than n threads
+                    {
+                        threads[curr_threads] = new thread(task, query, server_port, server_ip, curr_threads);
+                        curr_threads++;
+                        done_queries++;
+                    }
+                }
+            }
+            curr_threads_global = curr_threads-1;
+
+            times++;
+        }
+        else   //threads are enough for all the queries
+            break;
     }
 
-    for (int i = 1; i < curr_threads; i++)   //join
+
+    for (int i = 1; i < curr_threads; i++)   //join last threads
     {
         threads[i]->join();
     }
 
-    sleep(5);
     return 0;
 }

@@ -107,7 +107,6 @@ int buffer_head = 0;
 int buffer_capacity = 0;
 int buffer_size = 0;
 
-Worker_list_node *master_workers;
 Worker_list_node *master_sockets;
 
 mutex cout_mutex;
@@ -129,7 +128,7 @@ int open_socket(int port)
     if (bind(sock, server_ptr, sizeof(server)) < 0)  //bind socket
         perror_exit("bind");
 
-    if (listen(sock, 5) < 0) perror_exit("listen");   //listen for connections
+    if (listen(sock, 10) < 0) perror_exit("listen");   //listen for connections
     return sock;
 }
 
@@ -185,26 +184,39 @@ int socket_read_str(int socket, char *buffer, size_t buffer_size)
     size_t str_size = 0;
     if (__socket_safe_read(socket, &str_size, sizeof(size_t)) < 0)
     {
+        LOG("111111");
         return -1;
     }
 
-    if ((str_size + 1) > buffer_size)
-    {
-        cout<<"str= "<<str_size<<" and buffer= "<<buffer_size<<endl;
-        LOG("buffer overflow");
-        return -1;
-    }
 
-    if (str_size == 0) {
-        return 0;
-    }
+
+//    if ((str_size + 1) > buffer_size)
+//    {
+//        cout<<"str= "<<str_size<<" and buffer= "<<buffer_size<<endl;
+//        char t[9];
+//        memcpy(t,&str_size,sizeof(size_t));
+//        t[8]= '\0';
+//
+//        printf("--> %s\n",t);
+//
+//
+//        LOG("buffer overflow");
+//        return -1;
+//    }
+//
+//    if (str_size == 0) {
+//        return 0;
+//    }
 
     if (__socket_safe_read(socket, buffer, str_size) < 0)
     {
+        LOG("2222222222");
         return -1;
     }
 
     buffer[str_size] = '\0';
+
+    printf("%ld:_%s_:%ld\n",str_size,buffer,strlen(buffer));
     return str_size;
 }
 
@@ -291,10 +303,6 @@ int statistics_connection(int sock)
     int date_size;
     char date_str[11];
 
-    int port;
-    socket_read_int(sock, &port);
-    insertListNode(port, master_workers); //save worker's port
-
     while(1){
         if ((date_size = socket_read_str(sock, date_str, 11)) < 0){
             cout << "failed to read" << endl;
@@ -319,7 +327,6 @@ int statistics_connection(int sock)
         {
             if(strcmp(disease,"/Done")== 0)
                 break;
-
 
             cout << disease << endl;
             int age20, age40, age60, age60Plus;
@@ -409,7 +416,7 @@ int query_connection(int client_sock)
 
             if(strcmp(answer, "/Done") == 0)
                 break;
-            cout<<"-"<<answer<<endl;
+            cout<<answer<<endl;
         }
 //        while((size = socket_read_str(s, answer, 32)) > 0)
 //        {
