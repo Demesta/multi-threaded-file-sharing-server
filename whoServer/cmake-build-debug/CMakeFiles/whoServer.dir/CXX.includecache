@@ -22,6 +22,10 @@ string
 
 /home/demesta/Documents/syspro3/whoServer/Worker_list.h
 
+/home/demesta/Documents/syspro3/whoServer/logging.cpp
+logging.h
+/home/demesta/Documents/syspro3/whoServer/logging.h
+
 /home/demesta/Documents/syspro3/whoServer/logging.h
 cstdio
 -
@@ -75,6 +79,14 @@ logging.h
 /home/demesta/Documents/syspro3/whoServer/logging.h
 sockets.h
 /home/demesta/Documents/syspro3/whoServer/sockets.h
+
+/home/demesta/Documents/syspro3/whoServer/sockets.cpp
+sockets.h
+/home/demesta/Documents/syspro3/whoServer/sockets.h
+unistd.h
+-
+logging.h
+/home/demesta/Documents/syspro3/whoServer/logging.h
 
 /home/demesta/Documents/syspro3/whoServer/sockets.h
 cstddef

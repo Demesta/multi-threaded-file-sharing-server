@@ -292,8 +292,6 @@ int main(int argc, char *argv[])
             socket_read_str(sock, get_command, 50);
             cout<<"Command: "<<get_command<<endl;
 
-            LOG("received command '%s' from client", get_command);
-
             if (strcmp(get_command, "/topk-AgeRanges") == 0)
             {
                 socket_read_str(sock, get_command, 100);   //get the whole "/topk-AgeRanges k country disease date1 date2" string
@@ -494,10 +492,10 @@ int main(int argc, char *argv[])
     {
         // welcome to the 400-line hell,
         // you  shall not escape from the doom that
-        // will become you if you try to understand this
+        // will become you if you try to understand it
         //
         // the following code is a fine example of
-        // abject oriented programming, only true
+        // abject oriented programming, the only true
         // programming paradigm practised through
         // generations of programmers.
         DirListNode *countries;

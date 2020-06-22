@@ -83,7 +83,6 @@ int socket_write_size_t(int socket, size_t value)
 
 int socket_write_str(int socket, char *buffer, size_t buffer_size)
 {
-    LOG("writing '%s' to socket %d", buffer, socket);
     if (__socket_safe_write(socket, &buffer_size, sizeof(size_t)) < 0)
     {
         return -1;

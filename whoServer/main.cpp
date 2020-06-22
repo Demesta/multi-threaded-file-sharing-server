@@ -1,4 +1,3 @@
-// fuser -k -n tcp 8002
 #include <stdio.h>
 #include <iostream>
 #include <sys/wait.h>         /* sockets */
@@ -20,7 +19,6 @@
 #include "Hash.h"
 #include "List.h"
 #include "utils.h"
-
 #include "logging.h"
 #include "sockets.h"
 
@@ -34,55 +32,6 @@ using namespace std;
 
 bool running = true;
 
-//struct Worker
-//{
-//  int id;
-//  char *address;
-//  int port;
-//
-//  size_t topk_age_ranges(int k, char *country, char *date_from, char *date_to, char *buffer, int buffer_size)
-//  {
-//      return 0;
-//  }
-//};
-//
-//mutex table_mutex;
-////HashTable *worker_table;
-//mutex list_mutex;
-////ArrayList *worker_list;
-//
-//Worker *create_worker(char *address, int port)
-//{
-//    char *address_copy = new char[strlen(address)];
-//    strcpy(address_copy, address);
-//
-//    lock_guard<mutex> lock(list_mutex);
-//    int id = worker_list->size();
-//
-//    Worker *worker = new Worker();
-//    worker->id = id;
-//    worker->address = address_copy;
-//    worker->port = port;
-//    worker_list->push(worker);
-//
-//    return worker;
-//}
-//
-//Worker *find_worker(char *country)
-//{
-//    lock_guard<mutex> lock(table_mutex);
-//    //return (Worker *) worker_table->get(country);
-//}
-//
-//void worker_add_country(Worker *worker, char *country, size_t country_size)
-//{
-//    char *country_copy = new char[country_size];
-//    strncpy(country_copy, country, country_size);
-//
-//    lock_guard<mutex> lock(table_mutex);
-//    //worker_table->put(country_copy, worker);
-//}
-//
 struct work_item
 {
   int socket;
@@ -174,21 +123,6 @@ int buffer_write(work_item &value)    //write socket to buffer
 
 int statistics_connection(int sock)
 {
-//    char worker_address[32];
-//    if (socket_read_str(socket, worker_address, 32) < 0)
-//    {
-//        cout << "failed to read worker address" << endl;
-//        return -1;
-//    }
-//
-//    int worker_port = 0;
-//    if (socket_read_int(socket, &worker_port) < 0)
-//    {
-//        cout << "failed to read worker port" << endl;
-//        return -1;
-//    }
-
-//    Worker *worker = create_worker(worker_address, worker_port);
     char country[32];
     int country_size;
     int date_size;
@@ -303,19 +237,18 @@ int query_connection(int client_socket)
                 return -1;
             }
 
-            LOG("got '%s' from worker", answer);
-
             if (strcmp(answer, "/Done") == 0)
                 break;
 
             // send answer to client
             int error_code;
-            if((error_code = socket_write_str(client_socket, answer, (size_t) answer_size)) < 0) {
+            if((error_code = socket_write_str(client_socket, answer, (size_t) answer_size)) < 0)
+            {
                 LOG("write failed: error code %d", error_code);
                 return -1;
             }
 
-            cout << answer << endl;
+            cout<< "Sending to client:" << answer << endl;
         }
     }
 
@@ -340,15 +273,12 @@ void task(int i)    //slave threads' work
         if (item.type == 0)   //something from master
         {
             statistics_connection(item.socket);
-//            int j;
-//            while(read(item.socket, &j, sizeof(int)) <= 0);
-//            LOG("%d", j);
+
         } else if (item.type == 1)   //query from client
         {
             query_connection(item.socket);
         }
-//
-//        close(item.socket);
+
     }
 }
 
@@ -359,7 +289,6 @@ void helper_main(int query_socket)
         int sock;
         if ((sock = accept(query_socket, nullptr, nullptr)) > 0)    //TODO edw kati ginetai
         {
-            cout << "query conection at " << sock << endl;
             work_item item{.socket=sock, .type=1};
             buffer_write(item);
         }
@@ -376,7 +305,6 @@ int main(int argc, char *argv[])       //main thread
     int query_port = args.query_port;
     int n = args.num_threads;
 
-    cout << "initializing socket buffer" << endl;
     buffer_capacity = args.buffer_size;
     socket_buffer = new work_item[args.buffer_size];
 
@@ -386,9 +314,6 @@ int main(int argc, char *argv[])       //main thread
     {
         threads[i] = new thread(task, i);
     }
-
-//    usleep(15 * 1000000);
-//    work_variable.notify_one();
 
     // listen on ports
     int statistics_socket = open_socket(args.statistics_port);
@@ -413,13 +338,6 @@ int main(int argc, char *argv[])       //main thread
             work_item item{.socket=socket, .type=0};
             buffer_write(item);
         }
-
-//        if ((socket = accept(query_socket, nullptr, nullptr)) > 0)    //TODO edw kati ginetai
-//        {
-//            cout<<"query conection at "<<query_socket<<endl;
-//            work_item item{.socket=socket, .type=1};
-//            buffer_write(item);
-//        }
     }
 
     for (int i = 1; i <= n; i++)   //join

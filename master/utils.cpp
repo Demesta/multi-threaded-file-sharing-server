@@ -125,7 +125,7 @@ void diseaseFrequency(string disease, string date1, string date2, string country
     string message = country + " " + to_string(count);
     socket_write_string(sock, message);
 
-    cout<<country<<" "<<count<<endl;
+    //cout<<country<<" "<<count<<endl;
 
 }
 
@@ -166,7 +166,7 @@ void num_Patient_Status(string status, string disease, string date1, string date
 
     string message = country + " " + to_string(count);
     socket_write_string(sock, message);
-    cout<<country<<" "<<count<<endl;
+    //cout<<country<<" "<<count<<endl;
 }
 
 void age_ranges(int k, string country, string disease, string date1, string date2, ListNode *&L, int sock)
@@ -246,7 +246,6 @@ void age_ranges(int k, string country, string disease, string date1, string date
             //cout<<"0-20: "<< result * 100<<"%"<<endl;
             string messgae = "0-20: " + to_string(result*100) + "%";
             socket_write_string(sock, messgae);
-            cout<<messgae<<endl;
         }
         else if(sort_array[z] == a2)
         {
@@ -254,7 +253,6 @@ void age_ranges(int k, string country, string disease, string date1, string date
             //cout<<"21-40: "<< result * 100<<"%"<<endl;
             string messgae = "21-40: " + to_string(result*100) + "%";
             socket_write_string(sock, messgae);
-            cout<<messgae<<endl;
         }
         else if(sort_array[z] == a3)
         {
@@ -262,7 +260,6 @@ void age_ranges(int k, string country, string disease, string date1, string date
             //cout<<"41-60: "<< result * 100<<"%"<<endl;
             string messgae = "41-60: " + to_string(result*100) + "%";
             socket_write_string(sock, messgae);
-            cout<<messgae<<endl;
         }
         else if(sort_array[z] == a4)
         {
@@ -270,7 +267,6 @@ void age_ranges(int k, string country, string disease, string date1, string date
             //cout<<"60+: "<< result * 100 <<"%"<<endl;
             string messgae = "60+: " + to_string(result*100) + "%";
             socket_write_string(sock, messgae);
-            cout<<messgae<<endl;
         }
 
     }

@@ -36,7 +36,7 @@ void PatientRecord::printPatientRecord(int sock)
 {
     string message = this->patientFirstName + " " + this->patientLastName + " " + this->diseaseID + " " + this->country + " " + this->date;
     socket_write_string(sock, message);
-    cout<<this->patientFirstName<<" "<<this->patientLastName<<" "<<this->diseaseID<<" "<<this->country<<" "<<this->date<<" "<<endl;
+    //cout<<this->patientFirstName<<" "<<this->patientLastName<<" "<<this->diseaseID<<" "<<this->country<<" "<<this->date<<" "<<endl;
 }
 
 const string &PatientRecord::getDiseaseId() const {
